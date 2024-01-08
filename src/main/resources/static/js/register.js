@@ -3,6 +3,7 @@ window.onload = function() {
     form.noValidate = true; // disable browser's default validation
 
     form.onsubmit = function(e) {
+        e.preventDefault(); // prevent form submission
         var email = document.getElementById("email");
         var username = document.getElementById("username");
         var password = document.getElementById("password");
@@ -72,7 +73,23 @@ window.onload = function() {
             confirmPassword.classList.add('invalid');
             errors = true;
         }
-
-        if(errors) e.preventDefault();
+        //Fetch response from backend
+        if(!errors) {
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form)
+            })
+            .then(response => {
+                if(response.ok) {
+                    window.location.href = '/login';
+                } else {
+                    response.text().then(text => {
+                        confirmPasswordError.textContent = 'Something went wrong. Try Again.';
+                        confirmPassword.classList.add('invalid');
+                    });
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
     }
 }

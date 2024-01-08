@@ -1,7 +1,9 @@
 window.onload = function() {
     var form = document.querySelector("form");
+    form.noValidate = true; // disable the browser's default validation
 
     form.onsubmit = function(e) {
+        e.preventDefault();
         var username = document.getElementById("username");
         var password = document.getElementById("password");
 
@@ -30,7 +32,23 @@ window.onload = function() {
             password.classList.add('invalid');
             errors = true;
         }
-
-        if(errors) e.preventDefault();
+        //Fetch response from backend
+        if(!errors) {
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form)
+            })
+            .then(response => {
+                if(response.ok) {
+                    window.location.href = '/index';
+                } else {
+                    usernameError.textContent = 'Wrong username or password.';
+                    username.classList.add('invalid');
+                    passwordError.textContent = 'Wrong username or password.';
+                    password.classList.add('invalid');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
     }
 }
