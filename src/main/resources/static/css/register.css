@@ -44,3 +44,23 @@ input[type="submit"] {
     border-radius: 5px;
     cursor: pointer;
 }
+
+.error {
+    color: red;
+}
+
+@keyframes shake {
+    0% { margin-left: 0rem; }
+    25% { margin-left: 0.5rem; }
+    50% { margin-left: 0rem; }
+    75% { margin-left: -0.5rem; }
+    100% { margin-left: 0rem; }
+  }
+  
+  .invalid {
+    border: 1px solid red !important;
+    animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
