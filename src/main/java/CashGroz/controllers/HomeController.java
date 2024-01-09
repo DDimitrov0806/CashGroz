@@ -69,4 +69,15 @@ public class HomeController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
     } 
+
+    @GetMapping("/index")
+    public ModelAndView index() {
+        return new ModelAndView("index");
+    }
+
+    @GetMapping("/categories")
+    public ModelAndView categories() {
+        return new ModelAndView("categories");
+    }
+
 }
