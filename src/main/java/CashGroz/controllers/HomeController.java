@@ -72,6 +72,16 @@ public class HomeController {
         return modelAndView;
     }
 
+    @GetMapping("/index")
+    public ModelAndView index() {
+        return new ModelAndView("index");
+    }
+
+    @GetMapping("/categories")
+    public ModelAndView categories() {
+        return new ModelAndView("categories");
+    }
+
     @GetMapping
     public String getMethodName() {
         return "Are you authorized?????";

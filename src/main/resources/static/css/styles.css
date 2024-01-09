@@ -12,3 +12,28 @@ h1 {
 p {
     color: #666;
 }
+
+nav {
+    background-color: rgb(80, 80, 80);
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    /*height: 70px;*/
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 60px 30px;
+    margin: 60px 0px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav a.active {
+    color: limegreen;
+    background-color: rgba(255, 255, 255, 0.2);
+}
