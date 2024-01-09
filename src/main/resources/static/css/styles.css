@@ -1,4 +1,5 @@
-body {
+/*Register and login*/
+.body_register {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
@@ -10,6 +11,25 @@ body {
 }
 
 .register-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.body_login {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
@@ -64,3 +84,42 @@ input[type="submit"] {
     backface-visibility: hidden;
     perspective: 1000px;
   }
+
+/*Navbar*/
+.body_navbar {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+body {
+    margin: 0;
+}
+nav {
+    background-color: rgb(80, 80, 80);
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    /*height: 70px;*/
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    padding: 60px 30px;
+    margin: 60px 0px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav a.active {
+    color: limegreen;
+    background-color: rgba(255, 255, 255, 0.2);
+}
