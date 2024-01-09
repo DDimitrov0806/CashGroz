@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authentication</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form action="/login" method="post">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+            <div id="usernameError" class="error"></div>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+            <div id="passwordError" class="error"></div>
+
+            <p class="switch-link">Don't have an account? <a href="/register">Register</a></p>
+
+            <input type="submit" value="Login">
+        </form>
+    </div>
+    <script src="/js/login.js"></script>
+</body>
+</html>
