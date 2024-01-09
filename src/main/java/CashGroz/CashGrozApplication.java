@@ -11,14 +11,14 @@ import CashGroz.repositories.RoleRepository;
 @SpringBootApplication
 public class CashGrozApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CashGrozApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CashGrozApplication.class, args);
+    }
 
-	    @Bean
+    @Bean
     public CommandLineRunner demo(RoleRepository roleRepo) {
         return (args) -> {
-            Role role=new Role();
+            Role role = new Role();
             role.setName("USER");
             roleRepo.save(role);
         };

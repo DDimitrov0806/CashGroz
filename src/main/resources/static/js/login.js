@@ -19,16 +19,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         void password.offsetWidth;
         usernameError.textContent = '';
         passwordError.textContent = '';
-
-        if(username.value.length < 5) {
-            usernameError.textContent = "Username must be at least 5 characters long.";
-            usernameError.classList.add("active");
-            username.classList.add('invalid');
-            errors = true;
-        }
         
-        if(password.value.length < 8) {
-            passwordError.textContent = "Password must be at least 8 characters long.";
+        if(password.value.length < 5) {
+            passwordError.textContent = "Password must be at least 5 characters long.";
             passwordError.classList.add("active");
             password.classList.add('invalid');
             errors = true;
@@ -36,7 +29,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         //Fetch response from backend
         if(!errors) {
             fetch(form.action, {
-                method: form.method,
+                method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -54,8 +47,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     passwordError.textContent = 'Wrong username or password.';
                     password.classList.add('invalid');
                 }
-            })
-            .catch(error => console.error('Error:', error));
+            });
         }
     }
 });
