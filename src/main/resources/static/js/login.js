@@ -1,5 +1,6 @@
-window.onload = function() {
+document.addEventListener('DOMContentLoaded', (event) => {
     var form = document.querySelector("form");
+    console.log(form);
     form.noValidate = true; // disable the browser's default validation
 
     form.onsubmit = function(e) {
@@ -33,13 +34,15 @@ window.onload = function() {
             errors = true;
         }
         //Fetch response from backend
+        
+
         if(!errors) {
-            fetch(form.action, {
-                method: form.method,
-                body: new FormData(form)
-            })
-            .then(response => {
-                if(response.ok) {
+            var xhr = new XMLHttpRequest();
+            console.log("About to send AJAX request");
+            xhr.open('POST', form.action, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4 && xhr.status === 200) {
                     window.location.href = '/index';
                 } else {
                     usernameError.textContent = 'Wrong username or password.';
@@ -47,8 +50,14 @@ window.onload = function() {
                     passwordError.textContent = 'Wrong username or password.';
                     password.classList.add('invalid');
                 }
-            })
-            .catch(error => console.error('Error:', error));
+            }
+            var data = JSON.stringify({
+                username: username.value,
+                password: password.value
+            });
+            xhr.send(data);
         }
+        // AJAX request...
+        console.log("AJAX request sent");
     }
-}
+});

@@ -74,14 +74,21 @@ window.onload = function() {
             errors = true;
         }
         //Fetch response from backend
-        if(!errors) {
+        if (!errors) {
             fetch(form.action, {
                 method: form.method,
-                body: new FormData(form)
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email.value,
+                    username: username.value,
+                    password: password.value
+                })
             })
             .then(response => {
                 if(response.ok) {
-                    window.location.href = '/login';
+                    window.location.href = '/api/login';
                 } else {
                     response.text().then(text => {
                         confirmPasswordError.textContent = 'Something went wrong. Try Again.';

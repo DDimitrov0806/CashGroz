@@ -1,6 +1,7 @@
 package CashGroz.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import CashGroz.dto.UserDto;
 import CashGroz.services.UserDetail;
@@ -50,6 +51,25 @@ public class HomeController {
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    // @GetMapping("/login")
+    // public String loginForm() {
+    //     return "login";
+    // }
+
+    @GetMapping("/login")
+    public ModelAndView login(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        return modelAndView;
+    }
+
+    @GetMapping("/register")
+    public ModelAndView register(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("register");
+        return modelAndView;
     }
 
     @GetMapping
