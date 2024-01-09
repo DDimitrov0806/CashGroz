@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
             })
             .then(response => {
                 if(response.ok) {
-                    window.location.href = '/index.html';
+                    window.location.href = '/index';
                 } else {
                     usernameError.textContent = 'Wrong username or password.';
                     username.classList.add('invalid');

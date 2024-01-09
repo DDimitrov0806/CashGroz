@@ -57,17 +57,7 @@ public class HomeController {
         modelAndView.setViewName("register");
         return modelAndView;
     }
-
-    @GetMapping("/index")
-    public ModelAndView index() {
-        return new ModelAndView("index");
-    }
-
-    @GetMapping("/categories")
-    public ModelAndView categories() {
-        return new ModelAndView("categories");
-    }
- 
+    
     @PostMapping("/register")
     public ModelAndView registerUser(@RequestBody UserDto userDto) {
         try {
