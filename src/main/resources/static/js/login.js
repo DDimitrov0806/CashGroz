@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', (event) => {
     var form = document.querySelector("form");
     console.log(form);
-    form.noValidate = true; // disable the browser's default validation
+    form.noValidate = true; // disable the browser default validation
 
     form.onsubmit = function(e) {
         e.preventDefault();
@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         var errors = false;
 
         username.classList.remove('invalid');
-        void username.offsetWidth; // trigger a DOM reflow
+        void username.offsetWidth;
         password.classList.remove('invalid');
-        void password.offsetWidth; // trigger a DOM reflow
+        void password.offsetWidth;
         usernameError.textContent = '';
         passwordError.textContent = '';
 
@@ -34,15 +34,19 @@ document.addEventListener('DOMContentLoaded', (event) => {
             errors = true;
         }
         //Fetch response from backend
-        
-
         if(!errors) {
-            var xhr = new XMLHttpRequest();
-            console.log("About to send AJAX request");
-            xhr.open('POST', form.action, true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function () {
-                if(xhr.readyState === 4 && xhr.status === 200) {
+            fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username.value,
+                    password: password.value
+                })
+            })
+            .then(response => {
+                if(response.ok) {
                     window.location.href = '/index';
                 } else {
                     usernameError.textContent = 'Wrong username or password.';
@@ -50,14 +54,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     passwordError.textContent = 'Wrong username or password.';
                     password.classList.add('invalid');
                 }
-            }
-            var data = JSON.stringify({
-                username: username.value,
-                password: password.value
-            });
-            xhr.send(data);
+            })
+            .catch(error => console.error('Error:', error));
         }
-        // AJAX request...
-        console.log("AJAX request sent");
     }
 });

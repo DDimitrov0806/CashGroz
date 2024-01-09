@@ -1,9 +1,9 @@
 window.onload = function() {
     var form = document.querySelector("form");
-    form.noValidate = true; // disable browser's default validation
+    form.noValidate = true;
 
     form.onsubmit = function(e) {
-        e.preventDefault(); // prevent form submission
+        e.preventDefault();
         var email = document.getElementById("email");
         var username = document.getElementById("username");
         var password = document.getElementById("password");
@@ -16,15 +16,15 @@ window.onload = function() {
 
         var errors = false;
 
-        // reset the input fields' styles
+        // reset the input fields styles
         email.classList.remove('invalid');
-        void email.offsetWidth; // trigger a DOM reflow
+        void email.offsetWidth;
         username.classList.remove('invalid');
-        void username.offsetWidth; // trigger a DOM reflow
+        void username.offsetWidth;
         password.classList.remove('invalid');
-        void password.offsetWidth; // trigger a DOM reflow
+        void password.offsetWidth;
         confirmPassword.classList.remove('invalid');
-        void confirmPassword.offsetWidth; // trigger a DOM reflow
+        void confirmPassword.offsetWidth;
 
         emailError.textContent = '';
         usernameError.textContent = '';
