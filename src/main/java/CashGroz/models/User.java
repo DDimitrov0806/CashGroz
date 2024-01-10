@@ -2,12 +2,14 @@ package CashGroz.models;
 
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,7 +24,9 @@ public class User {
     private String password;
     @ManyToMany
     private Set<Role> roles;
-    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Category> categories;
+
     public User(Integer id, String username, String password) {
         this.id = id;
         this.username = username;
@@ -62,5 +66,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }
