@@ -1,28 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Authentication</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
 </head>
 <body>
     <div class="body_login">
         <div class="login-container">
             <h2>Login</h2>
-            <form action="/login" method="post">
+            <form th:action="@{/login}" method="post">
+  
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" required th:field="${username}">
                 <div id="usernameError" class="error"></div>
 
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" required th:field="${password}">
                 <div id="passwordError" class="error"></div>
 
-                <p class="switch-link">Don't have an account? <a href="/register">Register</a></p>
+                <p class="switch-link">Don't have an account? <a th:href="@{/register}">Register</a></p>
 
                 <input type="submit" value="Login">
             </form>
         </div>
-    </div>  
-    <script src="/js/login.js"></script>
+    </div>
+    <script th:src="@{/js/login.js}"></script>
 </body>
 </html>

@@ -33,6 +33,8 @@ public class HomeController {
     @GetMapping("/login")
     public ModelAndView getLoginView() {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("username", new String());
+        modelAndView.addObject("password", new String());
         modelAndView.setViewName("login");
         return modelAndView;
     }
@@ -54,6 +56,9 @@ public class HomeController {
     @GetMapping("/register")
     public ModelAndView getRegisterView() {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("username", new String());
+        modelAndView.addObject("password", new String());
+        modelAndView.addObject("confirmPassword", new String());
         modelAndView.setViewName("register");
         return modelAndView;
     }
@@ -63,6 +68,9 @@ public class HomeController {
         try {
             userDetail.registerUser(userDto);
             ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("username", new String());
+            modelAndView.addObject("password", new String());
+            modelAndView.addObject("confirmPassword", new String());
             modelAndView.setViewName("login");
             return modelAndView;
         } catch (Exception e) {
