@@ -1,17 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categories</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
 </head>
 <body>
     <div th:replace="navbar :: navbar"></div>
-
-    <script src="/js/navbar.js"></script>
-
-    <h1>Categories</h1>
-    <p>Hello</p>
+    <div class="container">
+        <h1>Categories</h1>
+        <div class="grid">
+            <div class="card" id="salary">
+                <h3>Salary</h3>
+            </div>
+            <div class="card" id="car-fuel">
+                <h3>Car Fuel</h3>
+            </div>
+            <div class="card" id="groceries">
+                <h3>Groceries</h3>
+            </div>
+            <div class="card" id="utilities">
+                <h3>Utilities</h3>
+            </div>
+            <div class="card" id="entertainment">
+                <h3>Entertainment</h3>
+            </div>
+            <!-- Add more categories as needed -->
+        </div>
+    </div>
+    <script th:src="@{/js/navbar.js}"></script>
+    <script th:src="@{/js/categories.js}"></script>
 </body>
 </html>
