@@ -82,10 +82,4 @@ public class HomeController {
     public ModelAndView index() {
         return new ModelAndView("index");
     }
-
-    @GetMapping("/categories")
-    public ModelAndView categories() {
-        return new ModelAndView("categories");
-    }
-
 }
