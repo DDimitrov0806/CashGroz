@@ -91,7 +91,6 @@ input[type="submit"] {
     background-color: #f4f4f4;
     margin: 0;
     padding: 0;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -99,27 +98,64 @@ input[type="submit"] {
 body {
     margin: 0;
 }
-nav {
+.navbar_container {
+    display: flex;
+    align-items: center;
     background-color: rgb(80, 80, 80);
     padding: 20px;
-    font-family: Arial, sans-serif;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
-    /*height: 70px;*/
 }
 
-nav a {
+.navbar_container img {
+    height: 50px;
+}
+
+.navbar_links {
+    margin-left: 20px;
+}
+
+.navbar_links a {
     color: white;
     text-decoration: none;
-    padding: 60px 30px;
-    margin: 60px 0px;
+    padding: 45px 20px;
+    margin: 0 0px;
     transition: background-color 0.3s, color 0.3s;
 }
 
-nav a:hover {
+.navbar_links a:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-nav a.active {
+.navbar_links a.active {
     color: limegreen;
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+/*Categoris*/
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.card:hover {
+    background-color: #f0f0f0;
+}
+
+.card-selected {
+    background-color: lightgray;
 }
