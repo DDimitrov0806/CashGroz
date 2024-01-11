@@ -32,10 +32,16 @@ public class CategoryController {
     @GetMapping
     public ModelAndView getAllCategories() {
         List<Category> categories = categoryService.getAllByUsername();
-        System.out.print("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
-        System.out.print(categories);
-        ModelAndView modelAndView = new ModelAndView("categories");
-        modelAndView.addObject("categories", categories);
+        ModelAndView modelAndView = new ModelAndView("addCategories");
+        modelAndView.addObject("addCategories", categories);
+        return modelAndView;
+    }
+    //For visualization in userCategories page
+    @GetMapping("/userCategories")
+    public ModelAndView showAllUserCategories() {
+        List<Category> categories = categoryService.getAllByUsername();
+        ModelAndView modelAndView = new ModelAndView("userCategories");
+        modelAndView.addObject("userCategories", categories);
         return modelAndView;
     }
 
@@ -58,7 +64,7 @@ public class CategoryController {
         try {
             categoryService.createCategory(category);
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("redirect:/categories");
+            modelAndView.setViewName("redirect:/addCategories");
             return modelAndView;
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
@@ -72,7 +78,7 @@ public class CategoryController {
         Category result = categoryService.updateCategory(id, categoryDto);
         if(result != null){
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("redirect:/categories");
+            modelAndView.setViewName("redirect:/categories/userCategories");
             return modelAndView;
         }
 
@@ -84,7 +90,7 @@ public class CategoryController {
         Category result = categoryService.deleteCategory(id);
         if(result != null){
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("redirect:/categories");
+            modelAndView.setViewName("redirect:/categories/userCategories");
             
             return modelAndView;
         }

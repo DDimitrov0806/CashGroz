@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
+</head>
+<body>
+    <div th:replace="navbar :: navbar"></div>
+    <div class="grid1">
+        <h1>Categories</h1>
+        <div class="input-container">
+            <input type="text" id="category-name-input" placeholder="Enter category name">
+            <button id="create-category-button">Create Category</button>
+        </div>
+    </div>
+    <script th:src="@{/js/navbar.js}"></script>
+    <script th:src="@{/js/addCategories.js}"></script>
+</body>
+</html>
