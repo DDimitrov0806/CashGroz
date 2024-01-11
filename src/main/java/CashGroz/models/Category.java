@@ -11,19 +11,19 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"category_name", "user_id"})})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "user_id"})})
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(nullable = false, unique = true)
-    private String categoryName;
+    private String name;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Category(String categoryName, User user) {
-        this.categoryName = categoryName;
+    public Category(String name, User user) {
+        this.name = name;
         this.user = user;
     }
 
@@ -38,12 +38,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return name;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public User getUser() {

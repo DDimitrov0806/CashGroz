@@ -1,20 +1,20 @@
 package CashGroz.dto;
 
 public class CategoryDto {
-    private String categoryName;
+    private String name;
 
     public CategoryDto() {
     }
 
-    public CategoryDto(String categoryName) {
-        this.categoryName = categoryName;
+    public CategoryDto(String name) {
+        this.name = name;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return this.name;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -23,21 +23,21 @@ public class CategoryService {
 
     public void createCategory(CategoryDto categoryDto) {
         User user = getCurrentUser();
-        Category category = new Category(categoryDto.getCategoryName(), user);
+        Category category = new Category(categoryDto.getName(), user);
         categoryRepository.save(category);
     }
 
     public List<Category> getAllByUsername() {
         User user = getCurrentUser();
-
-        return user.getCategories().stream().toList();
+        
+        return categoryRepository.findAllByUserId(user.getId());
     }
 
     public Category updateCategory(Integer id, CategoryDto categoryDto) {
         Optional<Category> existingCategory = categoryRepository.findById(id);
         if (existingCategory.isPresent()) {
             Category _category = existingCategory.get();
-            _category.setCategoryName(categoryDto.getCategoryName());
+            _category.setName(categoryDto.getName());
             categoryRepository.save(_category);
             return _category;
         }
@@ -64,7 +64,7 @@ public class CategoryService {
     
     private User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByUsername(authentication.getName());
+        User user = userRepository.findByUsername("test1");
 
         return user;
     }

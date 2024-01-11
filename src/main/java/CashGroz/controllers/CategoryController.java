@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,14 +32,11 @@ public class CategoryController {
     @GetMapping
     public ModelAndView getAllCategories() {
         List<Category> categories = categoryService.getAllByUsername();
-        if(categories == null){
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("category");
-            modelAndView.addObject("categories", categories);
-            return modelAndView;
-        }
-
-        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        System.out.print("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+        System.out.print(categories);
+        ModelAndView modelAndView = new ModelAndView("categories");
+        modelAndView.addObject("categories", categories);
+        return modelAndView;
     }
 
     @GetMapping("/{id}")
@@ -60,35 +58,62 @@ public class CategoryController {
         try {
             categoryService.createCategory(category);
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("categories");
+            modelAndView.setViewName("redirect:/categories");
             return modelAndView;
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping("/{id}")
-    public ModelAndView updateCategory(@PathVariable("id") Integer id, @RequestBody CategoryDto category) {
-        Category result = categoryService.updateCategory(id, category);
+    @PostMapping("/edit")
+    public ModelAndView updateCategory(@RequestParam("id") Integer id, @RequestParam("name") String name){
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setName(name);
+        Category result = categoryService.updateCategory(id, categoryDto);
         if(result != null){
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("categories");
+            modelAndView.setViewName("redirect:/categories");
             return modelAndView;
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/{id}")
-    public ModelAndView deleteCategory(@PathVariable("id") Integer id){
-        Category category = categoryService.deleteCategory(id);
-
-        if(category==null){
+    @PostMapping("/delete")
+    public ModelAndView deleteCategory(@RequestParam("id") Integer id) {
+        Category result = categoryService.deleteCategory(id);
+        if(result != null){
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("categories");
+            modelAndView.setViewName("redirect:/categories");
+            
             return modelAndView;
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+
+    // @PutMapping("/{id}")
+    // public ModelAndView updateCategory(@PathVariable("id") Integer id, @RequestBody CategoryDto category) {
+    //     Category result = categoryService.updateCategory(id, category);
+    //     if(result != null){
+    //         ModelAndView modelAndView = new ModelAndView();
+    //         modelAndView.setViewName("categories");
+    //         return modelAndView;
+    //     }
+
+    //     throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    // }
+
+    // @DeleteMapping("/{id}")
+    // public ModelAndView deleteCategory(@PathVariable("id") Integer id){
+    //     Category category = categoryService.deleteCategory(id);
+
+    //     if(category==null){
+    //         ModelAndView modelAndView = new ModelAndView();
+    //         modelAndView.setViewName("categories");
+    //         return modelAndView;
+    //     }
+
+    //     throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    // }
 }
