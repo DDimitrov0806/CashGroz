@@ -5,21 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categories</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
     <div th:replace="navbar :: navbar"></div>
     <div class="grid1">
         <h1>Categories</h1>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Actions</th>
-            </tr>
-            <tr th:each="category : ${userCategories}">
-                <td th:text="${category.id}"></td>
-                <td th:text="${category.name}"></td>
-                <td>
+        <div class="icon-grid">
+            <div th:each="category : ${userCategories}" class="icon-card">
+                <i th:class="'fas ' + ${category.icon}"></i>
+                <p th:text="${category.name}"></p>
+                <div class="card-actions">
                     <form method="POST" th:action="@{/categories/edit}">
                         <input type="hidden" name="id" th:value="${category.id}">
                         <input type="text" name="name" placeholder="Enter new name">
@@ -29,11 +25,11 @@
                         <input type="hidden" name="id" th:value="${category.id}">
                         <button type="submit" name="submit" class="link-button">DELETE</button>
                     </form>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </div>
+        </div>
     </div>
     <script th:src="@{/js/navbar.js}"></script>
-    <script th:src="@{/js/categories.js}"></script>
+    <script th:src="@{/js/userCategories.js}"></script>
 </body>
 </html>

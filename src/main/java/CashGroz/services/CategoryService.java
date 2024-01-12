@@ -23,7 +23,7 @@ public class CategoryService {
 
     public void createCategory(CategoryDto categoryDto) {
         User user = getCurrentUser();
-        Category category = new Category(categoryDto.getName(), user);
+        Category category = new Category(categoryDto.getName(), user, categoryDto.getIcon());
         categoryRepository.save(category);
     }
 

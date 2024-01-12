@@ -5,12 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Categories</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
     <div th:replace="navbar :: navbar"></div>
     <div class="grid1">
         <h1>Categories</h1>
         <div class="input-container">
+            <div id="icon-selection" class="icon-grid">
+                <div class="icon-card" onclick="selectIcon('fa-gas-pump')">
+                    <i class="fas fa-gas-pump"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-piggy-bank')">
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-champagne-glasses')">
+                    <i class="fas fa-champagne-glasses"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-sack-dollar')">
+                    <i class="fas fa-sack-dollar"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-file-invoice-dollar')">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-burger')">
+                    <i class="fas fa-burger"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-cart-shopping')">
+                    <i class="fas fa-cart-shopping"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-utensils')">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-bus')">
+                    <i class="fas fa-bus"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-gift')">
+                    <i class="fas fa-gift"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-hand-holding-dollar')">
+                    <i class="fas fa-hand-holding-dollar"></i>
+                </div>
+                <div class="icon-card" onclick="selectIcon('fa-smoking')">
+                    <i class="fas fa-smoking"></i>
+                </div>
+                <!-- Add more icons as needed -->
+            </div>
             <input type="text" id="category-name-input" placeholder="Enter category name">
             <button id="create-category-button">Create Category</button>
         </div>

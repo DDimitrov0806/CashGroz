@@ -64,7 +64,6 @@ public class CategoryController {
         try {
             categoryService.createCategory(category);
             ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("redirect:/addCategories");
             return modelAndView;
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
