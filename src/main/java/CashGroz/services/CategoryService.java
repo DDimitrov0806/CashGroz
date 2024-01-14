@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import CashGroz.dto.CategoryDto;
@@ -21,51 +20,39 @@ public class CategoryService {
     @Autowired
     private UserRepository userRepository;
 
-    public void createCategory(CategoryDto categoryDto) {
-        User user = getCurrentUser();
-        Category category = new Category(categoryDto.getCategoryName(), user);
+    public void createCategory(CategoryDto categoryDto, String username) {
+        User user = userRepository.findByUsername(username);
+        Category category = new Category(categoryDto.getName(), user, categoryDto.getIcon());
         categoryRepository.save(category);
     }
 
-    public List<Category> getAllByUsername() {
-        User user = getCurrentUser();
+    public List<Category> getAllByUsername(String username) {
+        User user = userRepository.findByUsername(username);
 
-        return user.getCategories().stream().toList();
+        return categoryRepository.findAllByUserId(user.getId());
     }
 
-    public Category updateCategory(Integer id, CategoryDto categoryDto) {
-        Optional<Category> existingCategory = categoryRepository.findById(id);
-        if (existingCategory.isPresent()) {
-            Category _category = existingCategory.get();
-            _category.setCategoryName(categoryDto.getCategoryName());
-            categoryRepository.save(_category);
-            return _category;
-        }
+    public void updateCategory(@NonNull Category category, String username) {
+        User user = userRepository.findByUsername(username);
 
-        return null;
+        category.setUser(user);
+        categoryRepository.save(category);
     }
 
-    public Optional<Category> getCategoryById(Integer id) {
+    public Optional<Category> getCategoryById(@NonNull Integer id) {
         Optional<Category> category = categoryRepository.findById(id);
 
         return category;
     }
 
-    public Category deleteCategory(Integer id) {
+    public Category deleteCategory(@NonNull Integer id) {
         Optional<Category> category = categoryRepository.findById(id);
 
-        if(category.isPresent()){
+        if (category.isPresent()) {
             categoryRepository.deleteById(id);
             return category.get();
         }
 
         return null;
-    }
-    
-    private User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByUsername(authentication.getName());
-
-        return user;
     }
 }

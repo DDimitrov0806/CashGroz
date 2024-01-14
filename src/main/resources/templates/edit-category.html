@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <link rel="stylesheet" href="/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div th:insert="~{navbar::navbar}"></div>
+    <div class="grid1">
+        <h1>Categories</h1>
+        <form method="post" th:action="@{/categories/edit}" th:object="${category}">
+            <div class="input-container">
+                <input type="text" name="name" id="category-name-input" placeholder="Enter category name" th:value="${category.name}">
+                <input type="hidden" id="id" name="id" th:value="${category.id}">
+                <input type="hidden" id="icon" name="icon"/>
+                <div id="icon-selection" class="icon-grid input-container">
+                    <div class="icon-card" data-icon-name="fas fa-piggy-bank">
+                        <i class="fas fa-gas-pump"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-piggy-bank">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-champagne-glasses">
+                        <i class="fas fa-champagne-glasses"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-sack-dollar">
+                        <i class="fas fa-sack-dollar"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-file-invoice-dollar">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-burger">
+                        <i class="fas fa-burger"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-cart-shopping">
+                        <i class="fas fa-cart-shopping"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-utensils">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-bus">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-gift">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-hand-holding-dollar">
+                        <i class="fas fa-hand-holding-dollar"></i>
+                    </div>
+                    <div class="icon-card" data-icon-name="fas fa-smoking">
+                        <i class="fas fa-smoking"></i>
+                    </div>
+                    <!-- Add more icons as needed -->
+                </div>
+                <button type="submit" id="create-category-button">Edit Category</button>
+            </div>
+        </form>
+    </div>
+    <script th:src="@{/js/create-category.js}"></script>
+</body>
+</html>

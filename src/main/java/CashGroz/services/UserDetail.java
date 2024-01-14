@@ -1,18 +1,15 @@
 package CashGroz.services;
 
-import java.security.InvalidParameterException;
 import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import CashGroz.dto.UserDto;
 import CashGroz.models.Role;
@@ -28,24 +25,28 @@ public class UserDetail implements UserDetailsService {
     PasswordEncoder passwordEncoder;
     @Autowired
     RoleRepository roleRepository;
-    
+
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        var user = userRepository.findByUsername(username);
+
         if (user == null) {
             throw new UsernameNotFoundException(String.format("User with username: %s does not exist", username));
         }
-        Set<GrantedAuthority> authorities = user.getRoles().stream()
-            .map((role) -> new SimpleGrantedAuthority(role.getName()))
-            .collect(Collectors.toSet());
-        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
+
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(username)
+                .password(user.getPassword())
+                .roles("USER")
+                .build();
     }
 
-    public void registerUser(UserDto userDto) throws InvalidParameterException{
+    public User registerUser(UserDto userDto) {
         // check if user exists
         User existingUser = userRepository.findByUsername(userDto.getUsername());
-        if(existingUser != null) {
-            throw new InvalidParameterException("Username already exists!");
+        if (existingUser == null) {
+            return existingUser;
         }
         // creating user object
         User user = new User();
@@ -54,5 +55,7 @@ public class UserDetail implements UserDetailsService {
         Role roles = roleRepository.findByName("USER").get();
         user.setRoles(Collections.singleton(roles));
         userRepository.save(user);
+
+        return null;
     }
 }

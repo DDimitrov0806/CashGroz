@@ -11,20 +11,28 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"category_name", "user_id"})})
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "user_id", "icon" }) })
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false, unique = true)
-    private String categoryName;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
+    private String icon;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Category(String categoryName, User user) {
-        this.categoryName = categoryName;
+    public Category(String name, String icon) {
+        this.name = name;
+        this.icon = icon;
+    }
+
+    public Category(String name, User user, String icon) {
+        this.name = name;
         this.user = user;
+        this.icon = icon;
     }
 
     public Category() {
@@ -38,12 +46,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return name;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public User getUser() {
@@ -52,5 +60,13 @@ public class Category {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }
