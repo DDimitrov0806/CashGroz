@@ -8,16 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
 </head>
 <body>
-    <div th:replace="navbar :: navbar"></div>
+    <div th:insert="~{navbar::navbar}"></div>
     <h1>Welcome to CashGroz!</h1>
-    
-    <!-- Set the color of the icon with style attribute -->
-    <i class="fas fa-car" style="color: red;"></i>
-    
-    <!-- You can also use other color representations like hex, rgb, etc. -->
-    <!-- <i class="fas fa-car" style="color: #00ff00;"></i> -->
-    <!-- <i class="fas fa-car" style="color: rgb(0, 0, 255);"></i> -->
-    
-    <script src="/js/navbar.js"></script>
 </body>
 </html>

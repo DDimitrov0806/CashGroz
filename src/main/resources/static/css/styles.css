@@ -1,4 +1,9 @@
 /*Register and login*/
+.successfull-login {
+    color: green;
+    padding-bottom: 10px;
+}
+
 .body_register {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
@@ -100,7 +105,7 @@ body {
 }
 .navbar_container {
     display: flex;
-    align-items: center;
+    align-items: left;
     background-color: rgb(80, 80, 80);
     padding: 20px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
@@ -173,6 +178,18 @@ body {
     padding: 15px;
     text-align: center;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 70%;
+}
+
+.icon-card-list {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;

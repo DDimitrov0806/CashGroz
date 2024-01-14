@@ -2,28 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Authentication</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}" type="text/css">
+    <link rel="stylesheet" href="/css/styles.css" type="text/css">
 </head>
 <body>
     <div class="body_login">
         <div class="login-container">
             <h2>Login</h2>
+            <div class="successfull-login" th:if="${param.success}">
+                Successfully registered
+            </div>
+
+            <div class="error" th:if="${param.error}">
+                Login or password incorrect.
+            </div>
+
             <form th:action="@{/login}" method="post">
-  
+
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required th:field="${username}">
+                <input name="username" type="text" required placeholder="Username">
                 <div id="usernameError" class="error"></div>
 
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required th:field="${password}">
+                <input name="password" type="password" required placeholder="Password">
                 <div id="passwordError" class="error"></div>
 
-                <p class="switch-link">Don't have an account? <a th:href="@{/register}">Register</a></p>
+                <p class="switch-link">Don't have an account? <a href="/register">Register</a></p>
 
                 <input type="submit" value="Login">
             </form>
         </div>
     </div>
-    <script th:src="@{/js/login.js}"></script>
+</div>
 </body>
 </html>

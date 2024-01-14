@@ -5,23 +5,21 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
 
 import CashGroz.dto.CategoryDto;
 import CashGroz.models.Category;
 import CashGroz.services.CategoryService;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-
 
 @Controller
 @RequestMapping("/categories")
@@ -29,96 +27,60 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
-    public ModelAndView getAllCategories() {
-        List<Category> categories = categoryService.getAllByUsername();
-        ModelAndView modelAndView = new ModelAndView("addCategories");
-        modelAndView.addObject("addCategories", categories);
-        return modelAndView;
-    }
-    //For visualization in userCategories page
-    @GetMapping("/userCategories")
-    public ModelAndView showAllUserCategories() {
-        List<Category> categories = categoryService.getAllByUsername();
-        ModelAndView modelAndView = new ModelAndView("userCategories");
-        modelAndView.addObject("userCategories", categories);
-        return modelAndView;
+    @GetMapping("/create")
+    public String getCreateCategoryPage(Model model) {
+        model.addAttribute("category", new CategoryDto());
+        return "create-category";
     }
 
-    @GetMapping("/{id}")
-    public ModelAndView updateModel(@PathVariable("id") Integer id) {
+    @GetMapping
+    public String getCategoriesPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+
+        List<Category> categories = categoryService.getAllByUsername(username);
+        model.addAttribute("categories", categories);
+        return "categories";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String getEditCategoryPage(Model model, @PathVariable Integer id) {
         Optional<Category> category = categoryService.getCategoryById(id);
 
-        if(category.isPresent()){
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("categories");
-            modelAndView.addObject("category", category);
-            return modelAndView;
+        if (category.isPresent()) {
+            model.addAttribute("category", category.get());
+            return "edit-category";
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    
-    @PostMapping
-    public ModelAndView createCategory(@RequestBody CategoryDto category) {
+
+    @PostMapping("/create")
+    public String createCategory(@ModelAttribute CategoryDto category,
+            @AuthenticationPrincipal UserDetails userDetails) {
         try {
-            categoryService.createCategory(category);
-            ModelAndView modelAndView = new ModelAndView();
-            return modelAndView;
+            String username = userDetails.getUsername();
+
+            categoryService.createCategory(category, username);
+            return "redirect:/categories";
         } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/edit")
-    public ModelAndView updateCategory(@RequestParam("id") Integer id, @RequestParam("name") String name){
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setName(name);
-        Category result = categoryService.updateCategory(id, categoryDto);
-        if(result != null){
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("redirect:/categories/userCategories");
-            return modelAndView;
-        }
+    public String editCategory(@ModelAttribute Category category, @AuthenticationPrincipal UserDetails userDetails) {
+        categoryService.updateCategory(category, userDetails.getUsername());
 
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return "redirect:/categories";
     }
 
-    @PostMapping("/delete")
-    public ModelAndView deleteCategory(@RequestParam("id") Integer id) {
+    @GetMapping("/delete/{id}")
+    public String deleteCategory(@PathVariable Integer id) {
         Category result = categoryService.deleteCategory(id);
-        if(result != null){
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("redirect:/categories/userCategories");
-            
-            return modelAndView;
+        if (result != null) {
+            return "redirect:/categories";
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-
-    // @PutMapping("/{id}")
-    // public ModelAndView updateCategory(@PathVariable("id") Integer id, @RequestBody CategoryDto category) {
-    //     Category result = categoryService.updateCategory(id, category);
-    //     if(result != null){
-    //         ModelAndView modelAndView = new ModelAndView();
-    //         modelAndView.setViewName("categories");
-    //         return modelAndView;
-    //     }
-
-    //     throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    // }
-
-    // @DeleteMapping("/{id}")
-    // public ModelAndView deleteCategory(@PathVariable("id") Integer id){
-    //     Category category = categoryService.deleteCategory(id);
-
-    //     if(category==null){
-    //         ModelAndView modelAndView = new ModelAndView();
-    //         modelAndView.setViewName("categories");
-    //         return modelAndView;
-    //     }
-
-    //     throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    // }
 }

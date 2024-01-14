@@ -11,18 +11,23 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "user_id", "icon"})})
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "name", "user_id", "icon" }) })
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String icon;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Category(String name, String icon) {
+        this.name = name;
+        this.icon = icon;
+    }
 
     public Category(String name, User user, String icon) {
         this.name = name;
