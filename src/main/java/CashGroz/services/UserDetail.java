@@ -43,7 +43,21 @@ public class UserDetail implements UserDetailsService {
     }
 
     public User registerUser(UserDto userDto) {
-        // check if user exists
+
+        if (userDto == null) {
+            throw new IllegalArgumentException("User cannot be null");
+        }
+
+        // Check for null username and password
+        if (userDto.getUsername() == null) {
+            throw new IllegalArgumentException("Username cannot be null");
+        }
+
+        if (userDto.getPassword() == null) {
+            throw new IllegalArgumentException("Password cannot be null");
+        }
+
+        // Check if user exists
         User existingUser = userRepository.findByUsername(userDto.getUsername());
         if (existingUser != null) {
             return existingUser;
