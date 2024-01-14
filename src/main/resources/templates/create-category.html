@@ -9,7 +9,7 @@
 </head>
 <body>
     <div th:insert="~{navbar::navbar}"></div>
-    <div class="grid1">
+    <div class="grid-container">
         <h1>Categories</h1>
         <form method="post" th:action="@{/categories/create}" th:object="${category}">
             <div class="input-container">
