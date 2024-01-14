@@ -2,10 +2,7 @@ package CashGroz.controllers;
 
 import org.springframework.web.servlet.ModelAndView;
 
-import CashGroz.dto.UserDto;
-import CashGroz.repositories.RoleRepository;
-import CashGroz.repositories.UserRepository;
-import CashGroz.services.UserDetail;
+import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import CashGroz.dto.UserDto;
 import CashGroz.models.Role;
 import CashGroz.models.User;
 import CashGroz.repositories.RoleRepository;
@@ -52,7 +50,6 @@ public class HomeController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") UserDto userDto) {
-        
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));

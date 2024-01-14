@@ -69,7 +69,7 @@ public class UserDetail implements UserDetailsService {
         Role roles = roleRepository.findByName("USER").get();
         user.setRoles(Collections.singleton(roles));
         userRepository.save(user);
-
+        
         return null;
     }
 }
