@@ -1,7 +1,5 @@
 package CashGroz.controllers;
 
-import org.springframework.web.servlet.ModelAndView;
-
 import CashGroz.dto.UserDto;
 import CashGroz.services.UserDetail;
 
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 @RequestMapping
-public class HomeController {
+public class AuthController {
     @Autowired
     private UserDetail userDetail;
     @Autowired
@@ -24,14 +22,14 @@ public class HomeController {
 
     @GetMapping("/login")
     public String getLoginPage() {
-        return "login";
+        return "auth/login";
     }
 
     @GetMapping("/register")
     public String getRegisterView(Model model) {
         UserDto userDto = new UserDto();
         model.addAttribute("user", userDto);
-        return "register";
+        return "auth/register";
     }
 
     @PostMapping("/register")
@@ -41,7 +39,7 @@ public class HomeController {
     }
 
     @GetMapping("/index")
-    public ModelAndView index() {
-        return new ModelAndView("index");
+    public String index() {
+        return "index";
     }
 }
