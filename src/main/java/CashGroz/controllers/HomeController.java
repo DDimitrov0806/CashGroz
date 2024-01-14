@@ -20,24 +20,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import CashGroz.models.Role;
-import CashGroz.models.User;
-import CashGroz.repositories.RoleRepository;
-import CashGroz.repositories.UserRepository;
-import CashGroz.services.UserDetail;
-
-import java.util.Collections;
 @Controller
 @RequestMapping
 public class HomeController {
     @Autowired
     private UserDetail userDetail;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
