@@ -21,19 +21,19 @@ public class CategoryService {
     private UserRepository userRepository;
 
     public void createCategory(CategoryDto categoryDto, String username) {
-        User user = userRepository.findByUsername(username).get();
+        User user = userRepository.findByUsername(username);
         Category category = new Category(categoryDto.getName(), user, categoryDto.getIcon());
         categoryRepository.save(category);
     }
 
     public List<Category> getAllByUsername(String username) {
-        User user = userRepository.findByUsername(username).get();
+        User user = userRepository.findByUsername(username);
 
         return categoryRepository.findAllByUserId(user.getId());
     }
 
     public void updateCategory(@NonNull Category category, String username) {
-        User user = userRepository.findByUsername(username).get();
+        User user = userRepository.findByUsername(username);
 
         category.setUser(user);
         categoryRepository.save(category);

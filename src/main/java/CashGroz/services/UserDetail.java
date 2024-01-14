@@ -31,22 +31,22 @@ public class UserDetail implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username);
 
-        if (!user.isPresent()) {
+        if (user == null) {
             throw new UsernameNotFoundException(String.format("User with username: %s does not exist", username));
         }
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(username)
-                .password(user.get().getPassword())
+                .password(user.getPassword())
                 .roles("USER")
                 .build();
     }
 
     public User registerUser(UserDto userDto) {
         // check if user exists
-        Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
-        if (existingUser.isPresent()) {
-            return existingUser.get();
+        User existingUser = userRepository.findByUsername(userDto.getUsername());
+        if (existingUser == null) {
+            return existingUser;
         }
         // creating user object
         User user = new User();
