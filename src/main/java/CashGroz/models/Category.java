@@ -20,19 +20,24 @@ public class Category {
     private String name;
     @Column(nullable = false)
     private String icon;
+    @Column(nullable = false)
+    private String color;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    
     private User user;
 
-    public Category(String name, String icon) {
+    public Category(String name, String icon, String color) {
         this.name = name;
         this.icon = icon;
+        this.color = color;
     }
 
-    public Category(String name, User user, String icon) {
+    public Category(String name, User user, String icon, String color) {
         this.name = name;
         this.user = user;
         this.icon = icon;
+        this.color = color;
     }
 
     public Category() {
@@ -68,5 +73,13 @@ public class Category {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+    
+    public String getColor() {
+        return this.color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }
