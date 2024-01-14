@@ -30,7 +30,7 @@ public class CategoryController {
     @GetMapping("/create")
     public String getCreateCategoryPage(Model model) {
         model.addAttribute("category", new CategoryDto());
-        return "create-category";
+        return "categories/create-category";
     }
 
     @GetMapping
@@ -39,7 +39,7 @@ public class CategoryController {
 
         List<Category> categories = categoryService.getAllByUsername(username);
         model.addAttribute("categories", categories);
-        return "categories";
+        return "categories/categories";
     }
 
     @GetMapping("/edit/{id}")
@@ -48,7 +48,7 @@ public class CategoryController {
 
         if (category.isPresent()) {
             model.addAttribute("category", category.get());
-            return "edit-category";
+            return "categories/edit-category";
         }
 
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);

@@ -28,6 +28,8 @@ public class User {
     private Set<Role> roles;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Category> categories;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Transaction> transactions;
 
     public User(Integer id, String username, String password) {
         this.id = id;
@@ -76,5 +78,13 @@ public class User {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

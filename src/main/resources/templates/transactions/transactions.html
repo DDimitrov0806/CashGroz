@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <link rel="stylesheet" href="/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="/css/transactions.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <div th:insert="~{navbar::navbar}"></div>
+    <div class="grid1">
+        <h1>Transactions</h1>
+        <form action="/transactions" method="get">
+            <label for="fromDate">From date:</label>
+            <input type="date" id="fromDate" name="fromDate" th:value="${fromDate}" min="2018-01-01" max="2025-12-31" />
+            
+            <label for="toDate">To date:</label>
+            <input type="date" id="toDate" name="toDate" th:value="${toDate}" min="2018-01-01" max="2025-12-31" />
+        
+            <button type="submit">Show</button>
+        </form>
+
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category Icon</th>
+                        <th>Category Name</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="transaction : ${transactions}">
+                        <td>
+                            <i th:class="${transaction.category.icon}"></i>
+                        </td>
+                        <td th:text="${transaction.category.name}">Category Name</td>
+                        <td th:text="${transaction.description}">Description</td>
+                        <td th:text="${transaction.amount}">Amount</td>
+                        <td>
+                            <a th:href="@{/transactions/edit/{id}(id=${transaction.id})}">Edit</a>
+                        </td>
+                        <td>
+                            <a th:href="@{/transactions/delete/{id}(id=${transaction.id})}">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+    <script src="/js/navbar.js"></script>
+</body>
+</html>
