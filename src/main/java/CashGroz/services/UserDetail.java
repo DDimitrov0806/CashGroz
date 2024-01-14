@@ -45,7 +45,7 @@ public class UserDetail implements UserDetailsService {
     public User registerUser(UserDto userDto) {
         // check if user exists
         User existingUser = userRepository.findByUsername(userDto.getUsername());
-        if (existingUser == null) {
+        if (existingUser != null) {
             return existingUser;
         }
         // creating user object
@@ -55,7 +55,7 @@ public class UserDetail implements UserDetailsService {
         Role roles = roleRepository.findByName("USER").get();
         user.setRoles(Collections.singleton(roles));
         userRepository.save(user);
-
+        
         return null;
     }
 }
