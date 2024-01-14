@@ -14,7 +14,7 @@
         <div class="icon-grid">
             <div th:each="category : ${categories}" class="icon-card-list">
                 <div class="card">
-                    <i th:class="${category.icon}"></i>
+                    <i th:class="${category.icon}" th:style="'color: ' + ${category.color}"></i>
                     <p th:text="${category.name}"></p>
                     <div class="card-actions">
                         <button><a th:href="@{|/categories/edit/${category.id}|}">Edit</a></button>

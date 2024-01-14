@@ -2,6 +2,7 @@ package CashGroz.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -20,9 +21,18 @@ public class CategoryService {
     @Autowired
     private UserRepository userRepository;
 
+    public String getRandomColor() {
+        Random random = new Random();
+        int red = random.nextInt(256);
+        int green = random.nextInt(256);
+        int blue = random.nextInt(256);
+        return String.format("#%02x%02x%02x", red, green, blue);
+    }
+
     public void createCategory(CategoryDto categoryDto, String username) {
         User user = userRepository.findByUsername(username);
-        Category category = new Category(categoryDto.getName(), user, categoryDto.getIcon());
+        String color = (categoryDto.getColor().equals("#ffffff") ? getRandomColor() : categoryDto.getColor());
+        Category category = new Category(categoryDto.getName(), user, categoryDto.getIcon(), color);
         categoryRepository.save(category);
     }
 
@@ -34,7 +44,10 @@ public class CategoryService {
 
     public void updateCategory(@NonNull Category category, String username) {
         User user = userRepository.findByUsername(username);
-
+    
+        String color = (category.getColor().equals("#ffffff") ? getRandomColor() : category.getColor());
+        category.setColor(color);
+    
         category.setUser(user);
         categoryRepository.save(category);
     }
