@@ -83,9 +83,7 @@ public class TransactionController {
         if (transaction.isPresent()) {
             List<Category> categories = categoryService.getAllByUsername(userDetails.getUsername());
             model.addAttribute("categories", categories);
-            TransactionDto transactionDto = new TransactionDto(transaction.get().getId(), transaction.get().getAmount(),
-                    transaction.get().getDescription(), transaction.get().getDateTime(),
-                    transaction.get().getCategory().getId());
+            TransactionDto transactionDto = new TransactionDto(transaction.get());
             model.addAttribute("transaction", transactionDto);
             return "transactions/edit-transaction";
         }

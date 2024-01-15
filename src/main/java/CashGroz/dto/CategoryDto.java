@@ -11,7 +11,7 @@ public class CategoryDto {
     public CategoryDto(String name, String icon, String color) {
         this.name = name;
         this.icon = icon;
-        this.color = color; // Initializing color
+        this.color = color;
     }
 
     public String getName() {

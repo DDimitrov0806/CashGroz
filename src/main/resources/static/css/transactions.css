@@ -1,12 +1,6 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 20px;
-}
-
-h2 {
-    color: #333;
+.grid1 {
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .form-container {
@@ -37,7 +31,7 @@ border: 1px solid #ddd;
 box-sizing: border-box;
 }
 
-input[type="submit"] {
+.create-transaction input[type="submit"] {
 background-color: #4CAF50;
 color: white;
 padding: 10px 15px;

@@ -27,11 +27,11 @@ public class BudgetService {
     @Autowired
     private TransactionService transactionService;
 
-    public Double getAmountSpentByUsernameAndPeriod(String username, LocalDate fromDate, LocalDate toDate, Category category) {
-        List<Transaction> transactions = transactionService.getAllByUsernameAndPeriod(username, fromDate, toDate);
+    public Double getAmountSpentByUsernameAndPeriod(String username, Budget budget) {
+        List<Transaction> transactions = transactionService.getAllByUsernameAndPeriod(username, budget.getDateTimeFrom(), budget.getDateTimeTo());
         Double amountSpent = 0.0;
         for (Transaction transaction : transactions) {
-            if(transaction.getCategory() == category) {
+            if(transaction.getCategory() == budget.getCategory()) {
                 amountSpent = amountSpent + transaction.getAmount();    
             }
         }

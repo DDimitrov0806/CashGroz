@@ -2,6 +2,8 @@ package CashGroz.dto;
 
 import java.time.LocalDateTime;
 
+import CashGroz.models.Transaction;
+
 public class TransactionDto {
     private Integer id;
     private Double amount;
@@ -25,6 +27,14 @@ public class TransactionDto {
     }
 
     public TransactionDto() {
+    }
+
+    public TransactionDto(Transaction transaction) {
+        this.id = transaction.getId();
+        this.amount = transaction.getAmount();
+        this.description = transaction.getDescription();
+        this.dateTime = transaction.getDateTime();
+        this.categoryId = transaction.getCategory().getId();
     }
 
     public Double getAmount() {

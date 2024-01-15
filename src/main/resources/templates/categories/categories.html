@@ -16,8 +16,8 @@
                 <i th:class="${category.icon}" th:style="'color: ' + ${category.color}"></i>
                 <p class="category-name" th:text="${category.name}"></p>
                 <div class="card-actions">
-                    <button class="edit-button"><a th:href="@{|/categories/edit/${category.id}|}">Edit</a></button>
-                    <button class="delete-button"><a th:href="@{|/categories/delete/${category.id}|}">Delete</a></button>
+                    <a class="edit-button" th:href="@{|/categories/edit/${category.id}|}">Edit</a>
+                    <a class="delete-button" th:href="@{|/categories/delete/${category.id}|}">Delete</a>
                 </div>
                 <!--
                 <form method="POST" th:action="@{/categories/edit}">
@@ -34,6 +34,11 @@
 
             </div>
         </div>
+    </div>
+    <div class="add-category-button">
+        <a href="/categories/create" title="Add category">
+            <i class="fas fa-plus"></i>
+        </a>
     </div>
     <script th:src="@{/js/navbar.js}"></script>
 </body>

@@ -1,6 +1,6 @@
 package CashGroz.models;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,18 +24,18 @@ public class Budget {
     @Column(nullable = false)
     private Double amount;
     @Column(nullable = false)
-    private LocalDateTime dateTimeFrom;
+    private LocalDate dateTimeFrom;
     @Column(nullable = false)
-    private LocalDateTime dateTimeTo;
+    private LocalDate dateTimeTo;
 
-    public Budget(Double amount, User user, LocalDateTime dateTimeFrom, LocalDateTime dateTimeTo, Category category) {
+    public Budget(Double amount, User user, LocalDate dateTimeFrom, LocalDate dateTimeTo, Category category) {
         this.amount = amount;
         this.user = user;
         this.dateTimeFrom = dateTimeFrom;
         this.dateTimeTo = dateTimeTo;
         this.category = category;
     }
-    public Budget(Double amount, Integer id, User user, LocalDateTime dateTimeFrom, LocalDateTime dateTimeTo, Category category) {
+    public Budget(Double amount, Integer id, User user, LocalDate dateTimeFrom, LocalDate dateTimeTo, Category category) {
         this.amount = amount;
         this.id = id;
         this.user = user;
@@ -75,18 +75,18 @@ public class Budget {
         this.category = category;
     }
 
-    public LocalDateTime getDateTimeFrom() {
+    public LocalDate getDateTimeFrom() {
         return dateTimeFrom;
     }
 
-    public void setDateTimeFrom(LocalDateTime dateTimeFrom) {
+    public void setDateTimeFrom(LocalDate dateTimeFrom) {
         this.dateTimeFrom = dateTimeFrom;
     }
 
-    public LocalDateTime getDateTimeTo() {
+    public LocalDate getDateTimeTo() {
         return dateTimeTo;
     }
-    public void setDateTimeTo(LocalDateTime dateTimeTo) {
+    public void setDateTimeTo(LocalDate dateTimeTo) {
         this.dateTimeTo = dateTimeTo;
     }
 }

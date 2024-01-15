@@ -1,13 +1,7 @@
 package CashGroz.controllers;
 
 import CashGroz.dto.UserDto;
-import CashGroz.models.Role;
-import CashGroz.models.User;
-import CashGroz.repositories.RoleRepository;
-import CashGroz.repositories.UserRepository;
 import CashGroz.services.UserDetail;
-
-import java.util.Collections;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,14 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class AuthController {
     @Autowired
     private UserDetail userDetail;
-
     @Autowired
     PasswordEncoder passwordEncoder;
-    @Autowired
-    UserRepository userRepository;
 
-    @Autowired
-    RoleRepository roleRepository;
     @GetMapping("/login")
     public String getLoginPage() {
         return "auth/login";
@@ -45,12 +34,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") UserDto userDto) {
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        Role roles = roleRepository.findByName("USER").get();
-        user.setRoles(Collections.singleton(roles));
-        userRepository.save(user);
+        userDetail.registerUser(userDto);
         return "redirect:/login?success";
     }
 

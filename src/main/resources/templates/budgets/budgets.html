@@ -18,11 +18,16 @@
                 <p>Amount: <span th:text="${budget.amount}"></span></p>
                 <p>AmountLeft: <span th:text="${amountLeft[iterStat.index]}"></span></p>
                 <div class="card-actions">
-                    <button class="edit-button"><a th:href="@{|/budgets/edit/${budget.id}|}">Edit</a></button>
-                    <button class="delete-button"><a th:href="@{|/budgets/delete/${budget.id}|}">Delete</a></button>
+                    <a class="edit-button" th:href="@{|/budgets/edit/${budget.id}|}">Edit</a>
+                    <a class="delete-button" th:href="@{|/budgets/delete/${budget.id}|}">Delete</a>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="add-category-button">
+        <a href="/budgets/create" title="Add category">
+            <i class="fas fa-plus"></i>
+        </a>
     </div>
     <script th:src="@{/js/navbar.js}"></script>
 </body>

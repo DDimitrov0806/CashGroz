@@ -1,21 +1,23 @@
 package CashGroz.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
+import CashGroz.models.Budget;
 
 public class BudgetDto {
     private Integer id;
     private Double amount;
     private Integer categoryId;
-    private LocalDateTime dateTimeFrom;
-    private LocalDateTime dateTimeTo;
+    private LocalDate dateTimeFrom;
+    private LocalDate dateTimeTo;
 
-    public BudgetDto(Double amount, LocalDateTime dateTimeFrom, LocalDateTime dateTimeTo, Integer categoryId) {
+    public BudgetDto(Double amount, LocalDate dateTimeFrom, LocalDate dateTimeTo, Integer categoryId) {
         this.amount = amount;
         this.dateTimeFrom = dateTimeFrom;
         this.dateTimeTo = dateTimeTo;
         this.categoryId = categoryId;
     }
-    public BudgetDto(Integer id, Double amount, LocalDateTime dateTimeFrom, LocalDateTime dateTimeTo, Integer categoryId) {
+    public BudgetDto(Integer id, Double amount, LocalDate dateTimeFrom, LocalDate dateTimeTo, Integer categoryId) {
         this.id = id;
         this.amount = amount;
         this.dateTimeFrom = dateTimeFrom;
@@ -24,6 +26,14 @@ public class BudgetDto {
     }
     public BudgetDto() {
         
+    }
+
+    public BudgetDto(Budget budget) {
+        this.id = budget.getId();
+        this.amount = budget.getAmount();
+        this.dateTimeFrom = budget.getDateTimeFrom();
+        this.dateTimeTo = budget.getDateTimeTo();
+        this.categoryId = budget.getCategory().getId();
     }
 
     public Integer getId() {
@@ -47,17 +57,17 @@ public class BudgetDto {
         this.categoryId = categoryId;
     }
 
-    public LocalDateTime getDateTimeFrom() {
+    public LocalDate getDateTimeFrom() {
         return dateTimeFrom;
     }
-    public void setDateTimeFrom(LocalDateTime dateTimeFrom) {
+    public void setDateTimeFrom(LocalDate dateTimeFrom) {
         this.dateTimeFrom = dateTimeFrom;
     }
 
-    public LocalDateTime getDateTimeTo() {
+    public LocalDate getDateTimeTo() {
         return dateTimeTo;
     }
-    public void setDateTimeTo(LocalDateTime dateTimeTo) {
+    public void setDateTimeTo(LocalDate dateTimeTo) {
         this.dateTimeTo = dateTimeTo;
     }
 }
