@@ -25,21 +25,23 @@ public class TransactionService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<Transaction> getAllByUsernameAndPeriod(String username, LocalDate fromDate, LocalDate toDate){
+    public List<Transaction> getAllByUsernameAndPeriod(String username, LocalDate fromDate, LocalDate toDate) {
         User user = userRepository.findByUsername(username);
         List<Transaction> transactions = user.getTransactions()
-            .stream()
-            .filter(p -> fromDate.isBefore(p.getDateTime().toLocalDate()) && p.getDateTime().toLocalDate().isBefore(toDate)).toList();
+                .stream()
+                .filter(p -> fromDate.isBefore(p.getDateTime().toLocalDate())
+                        && p.getDateTime().toLocalDate().isBefore(toDate))
+                .toList();
 
         return transactions;
     }
 
-    public Optional<Transaction> getTransactionById(Integer id){
+    public Optional<Transaction> getTransactionById(Integer id) {
         Optional<Transaction> transaction = transactionRepository.findById(id);
 
         return transaction;
     }
-    
+
     public Transaction deleteTransaction(@NonNull Integer id) {
         Optional<Transaction> transaction = transactionRepository.findById(id);
 
@@ -54,14 +56,16 @@ public class TransactionService {
     public void createTransaction(TransactionDto transactionDto, String username) {
         User user = userRepository.findByUsername(username);
         Category category = categoryRepository.findById(transactionDto.getCategoryId()).get();
-        Transaction transaction = new Transaction(transactionDto.getAmount(),transactionDto.getDescription(),transactionDto.getDateTime(),category,user);
+        Transaction transaction = new Transaction(transactionDto.getAmount(), transactionDto.getDescription(),
+                transactionDto.getDateTime(), category, user);
         transactionRepository.save(transaction);
     }
 
     public void updateTransaction(TransactionDto transactionDto, String username) {
         User user = userRepository.findByUsername(username);
         Category category = categoryRepository.findById(transactionDto.getCategoryId()).get();
-        Transaction transaction = new Transaction(transactionDto.getId(), transactionDto.getAmount(),transactionDto.getDescription(),transactionDto.getDateTime(),category,user);
+        Transaction transaction = new Transaction(transactionDto.getId(), transactionDto.getAmount(),
+                transactionDto.getDescription(), transactionDto.getDateTime(), category, user);
         transactionRepository.save(transaction);
     }
 }

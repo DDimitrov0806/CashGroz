@@ -27,7 +27,8 @@ public class Transaction {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public Transaction(Integer id, Double amount, String description, LocalDateTime dateTime, Category category, User user) {
+    public Transaction(Integer id, Double amount, String description, LocalDateTime dateTime, Category category,
+            User user) {
         this.id = id;
         this.amount = amount;
         this.description = description;

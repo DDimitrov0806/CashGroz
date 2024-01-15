@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budgets</title>
+    <link rel="stylesheet" href="/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <div th:insert="~{navbar::navbar}"></div>
+    <div class="grid-container">
+        <h1>Budgets</h1>
+        <div class="icon-grid">
+            <div th:each="budget, iterStat : ${budgets}" class="icon-card-list">
+                <i th:class="${budget.category.icon}"></i>
+                <p class="category-name" th:text="${budget.category.name}"></p>
+                <p>Amount: <span th:text="${budget.amount}"></span></p>
+                <p>AmountLeft: <span th:text="${amountLeft[iterStat.index]}"></span></p>
+                <div class="card-actions">
+                    <a class="edit-button" th:href="@{|/budgets/edit/${budget.id}|}">Edit</a>
+                    <a class="delete-button" th:href="@{|/budgets/delete/${budget.id}|}">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="add-category-button">
+        <a href="/budgets/create" title="Add category">
+            <i class="fas fa-plus"></i>
+        </a>
+    </div>
+    <script th:src="@{/js/navbar.js}"></script>
+</body>
+
+</html>

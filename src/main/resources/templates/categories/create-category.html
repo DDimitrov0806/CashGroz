@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,18 @@
     <link rel="stylesheet" href="/css/styles.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
     <div th:insert="~{navbar::navbar}"></div>
-    <div class="grid1">
+    <div class="grid-container">
         <h1>Categories</h1>
         <form method="post" th:action="@{/categories/create}" th:object="${category}">
             <div class="input-container">
                 <input type="text" name="name" id="category-name-input" placeholder="Enter category name">
+                <input type="color" name="color" id="category-color-input" value="#ffffff">
                 <input type="hidden" id="icon" name="icon" th:field="*{icon}" />
                 <div id="icon-selection" class="icon-grid input-container">
-                    <div class="icon-card" data-icon-name="fas fa-piggy-bank">
+                    <div class="icon-card" data-icon-name="fas fa-gas-pump">
                         <i class="fas fa-gas-pump"></i>
                     </div>
                     <div class="icon-card" data-icon-name="fas fa-piggy-bank">
@@ -52,7 +55,6 @@
                     <div class="icon-card" data-icon-name="fas fa-smoking">
                         <i class="fas fa-smoking"></i>
                     </div>
-                    <!-- Add more icons as needed -->
                 </div>
                 <button type="submit" id="create-category-button">Create Category</button>
             </div>
@@ -60,4 +62,5 @@
     </div>
     <script th:src="@{/js/create-category.js}"></script>
 </body>
+
 </html>

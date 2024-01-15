@@ -1,3 +1,16 @@
+/*General*/
+h1 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 30px;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
 /*Register and login*/
 .successfull-login {
     color: green;
@@ -52,7 +65,9 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"], input[type="password"], input[type="email"] {
+input[type="text"],
+input[type="password"],
+input[type="email"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -75,20 +90,34 @@ input[type="submit"] {
 }
 
 @keyframes shake {
-    0% { margin-left: 0rem; }
-    25% { margin-left: 0.5rem; }
-    50% { margin-left: 0rem; }
-    75% { margin-left: -0.5rem; }
-    100% { margin-left: 0rem; }
-  }
-  
-  .invalid {
+    0% {
+        margin-left: 0rem;
+    }
+
+    25% {
+        margin-left: 0.5rem;
+    }
+
+    50% {
+        margin-left: 0rem;
+    }
+
+    75% {
+        margin-left: -0.5rem;
+    }
+
+    100% {
+        margin-left: 0rem;
+    }
+}
+
+.invalid {
     border: 1px solid red !important;
-    animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake 0.2s cubic-bezier(.36, .07, .19, .97) both;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px;
-  }
+}
 
 /*Navbar*/
 .body_navbar {
@@ -100,31 +129,36 @@ input[type="submit"] {
     justify-content: center;
     align-items: center;
 }
-body {
-    margin: 0;
-}
+
 .navbar_container {
     display: flex;
     align-items: left;
     background-color: rgb(80, 80, 80);
-    padding: 20px;
+    padding: 0px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .navbar_container img {
-    height: 50px;
+    height: 70px;
+    padding: 12px 0px;
+    margin-left: 10px;
 }
 
 .navbar_links {
-    margin-left: 20px;
+    display: flex;
+    align-items: center;
 }
 
 .navbar_links a {
     color: white;
     text-decoration: none;
-    padding: 45px 20px;
-    margin: 0 0px;
+    padding: 35px 50px;
+    margin: 0 1px;
     transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3em;
 }
 
 .navbar_links a:hover {
@@ -136,7 +170,24 @@ body {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-/*Categoris*/
+
+.logout-form {
+    display: flex;
+    align-items: center;
+}
+
+.logout-form input[type="submit"] {
+    margin-left: 30px;
+    width: 100%;
+    padding: 15px 45px;
+    color: #fff;
+    background-color: #333;
+    border: 30px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/*Categories grid and cards*/
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -165,11 +216,23 @@ body {
     background-color: lightgray;
 }
 
-/*Icons*/
 .icon-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* This will make each row contain 4 grid items */
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
+    margin-bottom: 100px;
+}
+
+@media screen and (min-width: 790px) {
+    .icon-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media screen and (min-width: 990px) {
+    .icon-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
 .icon-card {
@@ -182,7 +245,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 70%;
+    color: rgb(80, 80, 80);
 }
 
 .icon-card-list {
@@ -194,15 +257,18 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 70%;
+}
+
+.icon-card-list:hover {
+    background-color: #f5f5f5;
+}
+
+.icon-card-list i {
+    font-size: 600%;
 }
 
 .icon-card i {
-    font-size: 10em;
-}
-
-.icon-card:hover {
-    background-color: #f5f5f5;
+    font-size: 600%;
 }
 
 .selected-card {
@@ -212,4 +278,78 @@ body {
 .card-actions {
     display: flex;
     justify-content: space-between;
+}
+
+/*Size of category title*/
+.category-name {
+    font-size: 1.5em;
+}
+
+/*Delete and edit buttons*/
+.edit-button,
+.delete-button {
+    border: none;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    transition: all 0.5s;
+    cursor: pointer;
+    padding: 10px 24px;
+    text-decoration: none;
+}
+
+.edit-button {
+    background-color: #4CAF50;
+}
+
+.delete-button {
+    background-color: #f44336;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+    background-color: #555555;
+}
+
+/*For categories creation*/
+.grid-container {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+
+.add-category-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    /* increased from 60px */
+    height: 80px;
+    /* increased from 60px */
+    border-radius: 50%;
+    background-color: #4CAF50;
+    /* same green as the edit button */
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 1000;
+}
+
+.add-category-button a {
+    color: white;
+    font-size: 36px;
+    /* increased from 30px */
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.add-category-button:hover {
+    background-color: #3d8a41;
 }

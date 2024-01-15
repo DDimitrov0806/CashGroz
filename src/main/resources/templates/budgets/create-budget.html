@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Create Budget</title>
+    <link rel="stylesheet" href="/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="/css/budget.css" type="text/css">
+</head>
+
+<body>
+    <div th:insert="~{navbar::navbar}"></div>
+    <h1>Create Budget</h1>
+    <form action="#" th:action="@{/budgets/create}" th:object="${budget}" method="post" class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" th:field="*{amount}" id="amount" class="form-control" placeholder="Enter budget amount"
+            required>
+
+        <label for="dateTime">Date and Time From</label>
+        <input type="date" id="dateTimeFrom" name="dateTimeFrom" required />
+
+        <label for="dateTime">Date and Time To</label>
+        <input type="date" id="dateTimeTo" name="dateTimeTo" required />
+        <label for="categoryId">Category</label>
+        <select th:field="*{categoryId}" id="categoryId" class="form-control">
+            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Create Budget</button>
+    </form>
+</body>
+
+</html>
