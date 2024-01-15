@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Budget</title>
+    <!-- Include any other head tags as required -->
+</head>
+<body>
+    <h1>Create Budget</h1>
+    <form action="#" th:action="@{/budgets/create}" th:object="${budget}" method="post">
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" th:field="*{amount}" id="amount" class="form-control" placeholder="Enter budget amount" required>
+        </div>
+
+        <div class="form-group">
+            <label for="categoryId">Category</label>
+            <label for="dateTime">Date and Time From</label>
+            <input type="datetime-local" id="dateTimeFrom" name="dateTimeFrom" required />
+
+            <label for="dateTime">Date and Time To</label>
+            <input type="datetime-local" id="dateTimeTo" name="dateTimeTo" required />
+            <select th:field="*{categoryId}" id="categoryId" class="form-control">
+                <!-- Assuming you pass a list of categories to the model -->
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</body>
+</html>
