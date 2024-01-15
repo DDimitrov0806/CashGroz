@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,18 @@
     <link rel="stylesheet" href="/css/styles.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
     <div th:insert="~{navbar::navbar}"></div>
     <div class="grid-container">
         <h1>Categories</h1>
         <form method="post" th:action="@{/categories/edit}" th:object="${category}">
             <div class="input-container">
-                <input type="text" name="name" id="category-name-input" placeholder="Enter category name" th:value="${category.name}">
+                <input type="text" name="name" id="category-name-input" placeholder="Enter category name"
+                    th:value="${category.name}">
                 <input type="color" name="color" id="category-color-input" th:value="${category.color}">
                 <input type="hidden" id="id" name="id" th:value="${category.id}">
-                <input type="hidden" id="icon" name="icon"/>
+                <input type="hidden" id="icon" name="icon" />
                 <div id="icon-selection" class="icon-grid input-container">
                     <div class="icon-card" data-icon-name="fas fa-piggy-bank">
                         <i class="fas fa-gas-pump"></i>
@@ -61,4 +64,5 @@
     </div>
     <script src="@{/js/create-category.js}"></script>
 </body>
+
 </html>

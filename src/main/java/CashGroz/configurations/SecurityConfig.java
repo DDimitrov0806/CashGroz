@@ -36,12 +36,12 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request -> request
                 .requestMatchers("/css/*", "/register", "/login").permitAll()
                 .anyRequest().authenticated())
-            .formLogin(form -> form
-                .loginPage("/login")
-                .defaultSuccessUrl("/index", true)
-                .failureUrl("/login?error")
-                .permitAll())
-            .logout(LogoutConfigurer::permitAll);
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/index", true)
+                        .failureUrl("/login?error")
+                        .permitAll())
+                .logout(LogoutConfigurer::permitAll);
         return http.build();
     }
 }

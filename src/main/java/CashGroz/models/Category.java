@@ -27,7 +27,7 @@ public class Category {
     private String color;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    
+
     private User user;
     @OneToMany(mappedBy = "category")
     private List<Transaction> transactions;
@@ -79,7 +79,7 @@ public class Category {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-    
+
     public String getColor() {
         return this.color;
     }

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/transactions.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
     <div th:insert="~{navbar::navbar}"></div>
     <div class="grid1">
@@ -25,7 +26,8 @@
 
             <label for="categoryId">Category</label>
             <select id="categoryId" name="categoryId" required>
-                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}">
+                </option>
             </select>
 
             <input class="create-transaction" type="submit" value="Create Transaction" />

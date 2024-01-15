@@ -32,6 +32,7 @@ public class User {
     private List<Transaction> transactions;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Budget> budgets;
+
     public List<Budget> getBudgets() {
         return budgets;
     }

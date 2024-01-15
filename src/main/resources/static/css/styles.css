@@ -65,7 +65,9 @@ label {
     margin-bottom: 5px;
 }
 
-input[type="text"], input[type="password"], input[type="email"] {
+input[type="text"],
+input[type="password"],
+input[type="email"] {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -88,20 +90,34 @@ input[type="submit"] {
 }
 
 @keyframes shake {
-    0% { margin-left: 0rem; }
-    25% { margin-left: 0.5rem; }
-    50% { margin-left: 0rem; }
-    75% { margin-left: -0.5rem; }
-    100% { margin-left: 0rem; }
-  }
-  
-  .invalid {
+    0% {
+        margin-left: 0rem;
+    }
+
+    25% {
+        margin-left: 0.5rem;
+    }
+
+    50% {
+        margin-left: 0rem;
+    }
+
+    75% {
+        margin-left: -0.5rem;
+    }
+
+    100% {
+        margin-left: 0rem;
+    }
+}
+
+.invalid {
     border: 1px solid red !important;
-    animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both;
+    animation: shake 0.2s cubic-bezier(.36, .07, .19, .97) both;
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px;
-  }
+}
 
 /*Navbar*/
 .body_navbar {
@@ -242,12 +258,15 @@ input[type="submit"] {
     align-items: center;
     flex-direction: column;
 }
+
 .icon-card-list:hover {
     background-color: #f5f5f5;
 }
+
 .icon-card-list i {
     font-size: 600%;
 }
+
 .icon-card i {
     font-size: 600%;
 }
@@ -260,13 +279,15 @@ input[type="submit"] {
     display: flex;
     justify-content: space-between;
 }
+
 /*Size of category title*/
 .category-name {
     font-size: 1.5em;
 }
 
 /*Delete and edit buttons*/
-.edit-button, .delete-button {
+.edit-button,
+.delete-button {
     border: none;
     color: white;
     text-align: center;
@@ -275,35 +296,39 @@ input[type="submit"] {
     cursor: pointer;
     padding: 10px 24px;
     text-decoration: none;
- }
- 
- .edit-button {
-    background-color: #4CAF50;
- }
- 
- .delete-button {
-    background-color: #f44336;
- }
- 
- .edit-button:hover, .delete-button:hover {
-    background-color: #555555;
- }
+}
 
- /*For categories creation*/
- .grid-container {
+.edit-button {
+    background-color: #4CAF50;
+}
+
+.delete-button {
+    background-color: #f44336;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+    background-color: #555555;
+}
+
+/*For categories creation*/
+.grid-container {
     margin-left: 10%;
     margin-right: 10%;
- }
+}
 
 
- .add-category-button {
+.add-category-button {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 80px; /* increased from 60px */
-    height: 80px; /* increased from 60px */
+    width: 80px;
+    /* increased from 60px */
+    height: 80px;
+    /* increased from 60px */
     border-radius: 50%;
-    background-color: #4CAF50; /* same green as the edit button */
+    background-color: #4CAF50;
+    /* same green as the edit button */
     position: fixed;
     right: 30px;
     bottom: 30px;
@@ -315,7 +340,8 @@ input[type="submit"] {
 
 .add-category-button a {
     color: white;
-    font-size: 36px; /* increased from 30px */
+    font-size: 36px;
+    /* increased from 30px */
     text-decoration: none;
     display: flex;
     align-items: center;

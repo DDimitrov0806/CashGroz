@@ -44,10 +44,10 @@ public class CategoryService {
 
     public void updateCategory(@NonNull Category category, String username) {
         User user = userRepository.findByUsername(username);
-    
+
         String color = (category.getColor().equals("#ffffff") ? getRandomColor() : category.getColor());
         category.setColor(color);
-    
+
         category.setUser(user);
         categoryRepository.save(category);
     }

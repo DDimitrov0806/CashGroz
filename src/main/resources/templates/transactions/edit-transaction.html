@@ -15,13 +15,13 @@
     <div class="grid1">
         <h1>Edit Transaction</h1>
         <form th:action="@{/transactions/edit}" th:object="${transaction}" method="post">
-            <input type="hidden" name="id" th:value="${transaction.id}"/>
+            <input type="hidden" name="id" th:value="${transaction.id}" />
 
             <label for="amount">Amount</label>
             <input type="number" id="amount" name="amount" th:value="${transaction.amount}" step="0.01" required />
 
             <label for="description">Description</label>
-            <input type="text" id="description" name="description" th:value="${transaction.description}"/>
+            <input type="text" id="description" name="description" th:value="${transaction.description}" />
 
             <label for="dateTime">Date and Time</label>
             <input type="datetime-local" id="dateTime" name="dateTime" th:value="${transaction.dateTime}" required />

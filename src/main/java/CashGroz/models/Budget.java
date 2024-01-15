@@ -35,7 +35,9 @@ public class Budget {
         this.dateTimeTo = dateTimeTo;
         this.category = category;
     }
-    public Budget(Double amount, Integer id, User user, LocalDate dateTimeFrom, LocalDate dateTimeTo, Category category) {
+
+    public Budget(Double amount, Integer id, User user, LocalDate dateTimeFrom, LocalDate dateTimeTo,
+            Category category) {
         this.amount = amount;
         this.id = id;
         this.user = user;
@@ -43,13 +45,15 @@ public class Budget {
         this.dateTimeTo = dateTimeTo;
         this.category = category;
     }
+
     public Budget() {
 
     }
-    
+
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -57,6 +61,7 @@ public class Budget {
     public Double getAmount() {
         return amount;
     }
+
     public void setAmount(Double amount) {
         this.amount = amount;
     }
@@ -64,6 +69,7 @@ public class Budget {
     public User getUser() {
         return user;
     }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -71,6 +77,7 @@ public class Budget {
     public Category getCategory() {
         return category;
     }
+
     public void setCategory(Category category) {
         this.category = category;
     }
@@ -86,6 +93,7 @@ public class Budget {
     public LocalDate getDateTimeTo() {
         return dateTimeTo;
     }
+
     public void setDateTimeTo(LocalDate dateTimeTo) {
         this.dateTimeTo = dateTimeTo;
     }

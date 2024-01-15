@@ -17,6 +17,7 @@ public class BudgetDto {
         this.dateTimeTo = dateTimeTo;
         this.categoryId = categoryId;
     }
+
     public BudgetDto(Integer id, Double amount, LocalDate dateTimeFrom, LocalDate dateTimeTo, Integer categoryId) {
         this.id = id;
         this.amount = amount;
@@ -24,8 +25,9 @@ public class BudgetDto {
         this.dateTimeTo = dateTimeTo;
         this.categoryId = categoryId;
     }
+
     public BudgetDto() {
-        
+
     }
 
     public BudgetDto(Budget budget) {
@@ -39,6 +41,7 @@ public class BudgetDto {
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -46,6 +49,7 @@ public class BudgetDto {
     public Double getAmount() {
         return amount;
     }
+
     public void setAmount(Double amount) {
         this.amount = amount;
     }
@@ -53,6 +57,7 @@ public class BudgetDto {
     public Integer getCategoryId() {
         return categoryId;
     }
+
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
     }
@@ -60,6 +65,7 @@ public class BudgetDto {
     public LocalDate getDateTimeFrom() {
         return dateTimeFrom;
     }
+
     public void setDateTimeFrom(LocalDate dateTimeFrom) {
         this.dateTimeFrom = dateTimeFrom;
     }
@@ -67,6 +73,7 @@ public class BudgetDto {
     public LocalDate getDateTimeTo() {
         return dateTimeTo;
     }
+
     public void setDateTimeTo(LocalDate dateTimeTo) {
         this.dateTimeTo = dateTimeTo;
     }

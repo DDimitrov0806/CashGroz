@@ -27,11 +27,12 @@ public class BudgetService {
     private TransactionService transactionService;
 
     public Double getAmountSpentByUsernameAndPeriod(String username, Budget budget) {
-        List<Transaction> transactions = transactionService.getAllByUsernameAndPeriod(username, budget.getDateTimeFrom(), budget.getDateTimeTo());
+        List<Transaction> transactions = transactionService.getAllByUsernameAndPeriod(username,
+                budget.getDateTimeFrom(), budget.getDateTimeTo());
         Double amountSpent = 0.0;
         for (Transaction transaction : transactions) {
-            if(transaction.getCategory() == budget.getCategory()) {
-                amountSpent = amountSpent + transaction.getAmount();    
+            if (transaction.getCategory() == budget.getCategory()) {
+                amountSpent = amountSpent + transaction.getAmount();
             }
         }
         return amountSpent;
@@ -43,8 +44,8 @@ public class BudgetService {
 
         return budgets;
     }
-    
-    public Optional<Budget> getBudgetById(Integer id){
+
+    public Optional<Budget> getBudgetById(Integer id) {
         Optional<Budget> budget = budgetRepository.findById(id);
 
         return budget;
@@ -53,18 +54,20 @@ public class BudgetService {
     public void createBudget(BudgetDto budgetDto, String username) {
         User user = userRepository.findByUsername(username);
         Category category = categoryRepository.findById(budgetDto.getCategoryId()).orElseThrow();
-        Budget budget = new Budget(budgetDto.getAmount(), user, budgetDto.getDateTimeFrom(), budgetDto.getDateTimeTo(),  category);
+        Budget budget = new Budget(budgetDto.getAmount(), user, budgetDto.getDateTimeFrom(), budgetDto.getDateTimeTo(),
+                category);
         budgetRepository.save(budget);
     }
-    
+
     public void updateBudget(BudgetDto budgetDto, String username) {
         User user = userRepository.findByUsername(username);
         Category category = categoryRepository.findById(budgetDto.getCategoryId()).get();
-        Budget budget = new Budget(budgetDto.getAmount(), budgetDto.getId(), user, budgetDto.getDateTimeFrom(), budgetDto.getDateTimeTo(), category);
+        Budget budget = new Budget(budgetDto.getAmount(), budgetDto.getId(), user, budgetDto.getDateTimeFrom(),
+                budgetDto.getDateTimeTo(), category);
 
         budgetRepository.save(budget);
     }
-    
+
     public Budget deleteBudget(Integer budgetId) {
         Optional<Budget> budget = budgetRepository.findById(budgetId);
         if (budget.isPresent()) {
