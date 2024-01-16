@@ -1,9 +1,11 @@
 package CashGroz.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import CashGroz.dto.BudgetDto;
@@ -40,9 +42,11 @@ public class BudgetService {
 
     public List<Budget> getAllBudgetsByUsername(String username) {
         User user = userRepository.findByUsername(username);
+        if(user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
         List<Budget> budgets = user.getBudgets();
-
-        return budgets;
+        return (budgets != null) ? budgets : Collections.emptyList();
     }
 
     public Optional<Budget> getBudgetById(Integer id) {
@@ -53,6 +57,9 @@ public class BudgetService {
 
     public void createBudget(BudgetDto budgetDto, String username) {
         User user = userRepository.findByUsername(username);
+        if(user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
         Category category = categoryRepository.findById(budgetDto.getCategoryId()).orElseThrow();
         Budget budget = new Budget(budgetDto.getAmount(), user, budgetDto.getDateTimeFrom(), budgetDto.getDateTimeTo(),
                 category);
@@ -61,10 +68,12 @@ public class BudgetService {
 
     public void updateBudget(BudgetDto budgetDto, String username) {
         User user = userRepository.findByUsername(username);
-        Category category = categoryRepository.findById(budgetDto.getCategoryId()).get();
+        if(user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        Category category = categoryRepository.findById(budgetDto.getCategoryId()).orElseThrow();
         Budget budget = new Budget(budgetDto.getAmount(), budgetDto.getId(), user, budgetDto.getDateTimeFrom(),
                 budgetDto.getDateTimeTo(), category);
-
         budgetRepository.save(budget);
     }
 

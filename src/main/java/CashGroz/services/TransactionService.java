@@ -9,6 +9,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import CashGroz.dto.TransactionDto;
+import CashGroz.models.Budget;
 import CashGroz.models.Category;
 import CashGroz.models.Transaction;
 import CashGroz.models.User;
@@ -34,6 +35,15 @@ public class TransactionService {
                 .toList();
 
         return transactions;
+    }
+
+    public Double getAmountSpentByUsernameAndPeriod(String username, Budget budget) {
+        List<Transaction> transactions = getAllByUsernameAndPeriod(username, budget.getDateTimeFrom(), budget.getDateTimeTo());
+        Double amountSpent = transactions.stream()
+            .filter(transaction -> transaction.getCategory().equals(budget.getCategory()))
+            .mapToDouble(Transaction::getAmount)
+            .sum();
+        return amountSpent;
     }
 
     public Optional<Transaction> getTransactionById(Integer id) {
