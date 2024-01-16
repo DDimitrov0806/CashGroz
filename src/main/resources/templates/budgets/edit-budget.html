@@ -17,12 +17,12 @@
             <input type="hidden" name="id" th:value="${budget.id}" />
 
             <label for="amount">Amount</label>
-            <input type="number" id="amount" name="amount" th:value="${budget.amount}" step="0.01" required />
+            <input type="number" id="amount" name="amount" th:value="${budget.amount}" step="0.01" min="0" required />
 
-            <label for="dateTimeFrom">Date and Time From</label>
+            <label for="dateTimeFrom">From Date</label>
             <input type="date" id="dateTimeFrom" name="dateTimeFrom" th:value="${budget.dateTimeFrom}" required />
 
-            <label for="dateTimeTo">Date and Time To</label>
+            <label for="dateTimeTo">To Date</label>
             <input type="date" id="dateTimeTo" name="dateTimeTo" th:value="${budget.dateTimeTo}" required />
 
             <label for="categoryId">Category</label>

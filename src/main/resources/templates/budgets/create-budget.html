@@ -12,16 +12,16 @@
     <h1>Create Budget</h1>
     <form action="#" th:action="@{/budgets/create}" th:object="${budget}" method="post" class="form-group">
         <label for="amount">Amount</label>
-        <input type="number" th:field="*{amount}" id="amount" class="form-control" placeholder="Enter budget amount"
-            required>
+        <input type="number" th:field="*{amount}" id="amount" th:value="${budget.amount}" class="form-control" placeholder="Enter budget amount" step="0.01" min="0"
+            required >
 
         <label for="dateTime">Date and Time From</label>
-        <input type="date" id="dateTimeFrom" name="dateTimeFrom" required />
+        <input type="date" id="dateTimeFrom" name="dateTimeFrom" th:value="${budget.dateTimeFrom}" required />
 
         <label for="dateTime">Date and Time To</label>
-        <input type="date" id="dateTimeTo" name="dateTimeTo" required />
+        <input type="date" id="dateTimeTo" name="dateTimeTo" th:value="${budget.dateTimeTo}" required />
         <label for="categoryId">Category</label>
-        <select th:field="*{categoryId}" id="categoryId" class="form-control">
+        <select th:field="*{categoryId}" id="categoryId" class="form-control" required>
             <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
         </select>
 

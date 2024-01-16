@@ -18,6 +18,8 @@
                 <i th:class="${budget.category.icon}"></i>
                 <p class="category-name" th:text="${budget.category.name}"></p>
                 <p>Amount: <span th:text="${budget.amount}"></span></p>
+                <p>From: <span th:text="${budget.dateTimeFrom}"></span></p>
+                <p>To: <span th:text="${budget.dateTimeTo}"></span></p>
                 <p>AmountLeft: <span th:text="${amountLeft[iterStat.index]}"></span></p>
                 <div class="card-actions">
                     <a class="edit-button" th:href="@{|/budgets/edit/${budget.id}|}">Edit</a>

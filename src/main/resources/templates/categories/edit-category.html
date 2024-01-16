@@ -16,12 +16,12 @@
         <form method="post" th:action="@{/categories/edit}" th:object="${category}">
             <div class="input-container">
                 <input type="text" name="name" id="category-name-input" placeholder="Enter category name"
-                    th:value="${category.name}">
-                <input type="color" name="color" id="category-color-input" th:value="${category.color}">
+                    th:value="${category.name}" required>
+                <input type="color" name="color" id="category-color-input" th:value="${category.color}" required> 
                 <input type="hidden" id="id" name="id" th:value="${category.id}">
-                <input type="hidden" id="icon" name="icon" />
+                <input type="hidden" id="icon" name="icon" th:value="${category.icon}" required/>
                 <div id="icon-selection" class="icon-grid input-container">
-                    <div class="icon-card" data-icon-name="fas fa-piggy-bank">
+                    <div class="icon-card" data-icon-name="fas fa-gas-pump">
                         <i class="fas fa-gas-pump"></i>
                     </div>
                     <div class="icon-card" data-icon-name="fas fa-piggy-bank">
@@ -62,7 +62,6 @@
             </div>
         </form>
     </div>
-    <script src="@{/js/create-category.js}"></script>
+    <script src="/js/create-category.js"></script>
 </body>
-
 </html>

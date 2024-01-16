@@ -46,6 +46,13 @@ public class TransactionController {
         if (fromDate == null) {
             fromDate = toDate.plusDays(TIME_RANGE);
         }
+
+        if(fromDate.compareTo(toDate) >= 0) {
+            var swapDateTime = fromDate;
+            fromDate = toDate;
+            toDate = swapDateTime;
+        }
+
         List<Transaction> transactions = transactionService.getAllByUsernameAndPeriod(userDetails.getUsername(),
                 fromDate, toDate);
         model.addAttribute("transactions", transactions);
@@ -94,9 +101,13 @@ public class TransactionController {
     @PostMapping("/edit")
     public String editTransaction(@ModelAttribute TransactionDto transactionDto,
             @AuthenticationPrincipal UserDetails userDetails) {
-        transactionService.updateTransaction(transactionDto, userDetails.getUsername());
-
-        return "redirect:/transactions";
+        try{
+            transactionService.updateTransaction(transactionDto, userDetails.getUsername());
+    
+            return "redirect:/transactions";
+        } catch (Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/delete/{id}")

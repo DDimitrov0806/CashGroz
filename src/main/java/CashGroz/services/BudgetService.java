@@ -1,6 +1,8 @@
 package CashGroz.services;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,9 @@ public class BudgetService {
         return budget;
     }
 
-    public void createBudget(BudgetDto budgetDto, String username) {
+    public void createBudget(BudgetDto budgetDto, String username) throws NoSuchElementException, Exception {
+        validateBudgetDto(budgetDto);
+
         User user = userRepository.findByUsername(username);
         Category category = categoryRepository.findById(budgetDto.getCategoryId()).orElseThrow();
         Budget budget = new Budget(budgetDto.getAmount(), user, budgetDto.getDateTimeFrom(), budgetDto.getDateTimeTo(),
@@ -59,9 +63,13 @@ public class BudgetService {
         budgetRepository.save(budget);
     }
 
-    public void updateBudget(BudgetDto budgetDto, String username) {
+    public void updateBudget(BudgetDto budgetDto, String username) throws NoSuchElementException, Exception{
+        validateBudgetDto(budgetDto);
+
         User user = userRepository.findByUsername(username);
-        Category category = categoryRepository.findById(budgetDto.getCategoryId()).get();
+
+        Category category = categoryRepository.findById(budgetDto.getCategoryId()).orElseThrow();
+
         Budget budget = new Budget(budgetDto.getAmount(), budgetDto.getId(), user, budgetDto.getDateTimeFrom(),
                 budgetDto.getDateTimeTo(), category);
 
@@ -75,5 +83,17 @@ public class BudgetService {
             return budget.get();
         }
         return null;
+    }
+
+    private void validateBudgetDto(BudgetDto budgetDto) throws Exception{
+        if(budgetDto.getDateTimeFrom() == null || budgetDto.getDateTimeTo() == null) {
+            throw new Exception("Date Time From and Date Time To must have a value");
+        }
+
+        if(budgetDto.getDateTimeFrom().compareTo(budgetDto.getDateTimeTo()) >= 0) {
+            var swapDateTime = budgetDto.getDateTimeFrom();
+            budgetDto.setDateTimeFrom(budgetDto.getDateTimeTo());
+            budgetDto.setDateTimeTo(swapDateTime);
+        }
     }
 }

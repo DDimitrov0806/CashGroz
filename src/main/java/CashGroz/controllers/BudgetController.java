@@ -61,31 +61,41 @@ public class BudgetController {
             budgetService.createBudget(budgetDto, username);
             return "redirect:/budgets";
         } catch (Exception ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
     }
 
     @GetMapping("/edit/{id}")
     public String getEditBudgetPage(Model model, @PathVariable Integer id,
             @AuthenticationPrincipal UserDetails userDetails) {
-        Optional<Budget> budget = budgetService.getBudgetById(id);
 
+        Optional<Budget> budget = budgetService.getBudgetById(id);
+            
         if (budget.isPresent()) {
-            List<Category> categories = categoryService.getAllByUsername(userDetails.getUsername());
-            model.addAttribute("categories", categories);
-            BudgetDto budgetDto = new BudgetDto(budget.get());
-            model.addAttribute("budget", budgetDto);
+            try{
+                List<Category> categories = categoryService.getAllByUsername(userDetails.getUsername());
+                model.addAttribute("categories", categories);
+                BudgetDto budgetDto = new BudgetDto(budget.get());
+                model.addAttribute("budget", budgetDto);
+            } catch (Exception ex){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
+            }
 
             return "budgets/edit-budget";
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/edit")
     public String editBudget(@ModelAttribute BudgetDto budgetDto,
             @AuthenticationPrincipal UserDetails userDetails) {
-        budgetService.updateBudget(budgetDto, userDetails.getUsername());
-        return "redirect:/budgets";
+        try {
+            budgetService.updateBudget(budgetDto, userDetails.getUsername());
+            return "redirect:/budgets";
+        } catch (Exception ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
+        }
     }
 
     @GetMapping("/delete/{id}")

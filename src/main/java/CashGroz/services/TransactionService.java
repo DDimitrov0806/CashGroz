@@ -2,6 +2,7 @@ package CashGroz.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,17 +54,17 @@ public class TransactionService {
         return null;
     }
 
-    public void createTransaction(TransactionDto transactionDto, String username) {
+    public void createTransaction(TransactionDto transactionDto, String username) throws NoSuchElementException {
         User user = userRepository.findByUsername(username);
-        Category category = categoryRepository.findById(transactionDto.getCategoryId()).get();
+        Category category = categoryRepository.findById(transactionDto.getCategoryId()).orElseThrow();
         Transaction transaction = new Transaction(transactionDto.getAmount(), transactionDto.getDescription(),
                 transactionDto.getDateTime(), category, user);
         transactionRepository.save(transaction);
     }
 
-    public void updateTransaction(TransactionDto transactionDto, String username) {
+    public void updateTransaction(TransactionDto transactionDto, String username) throws NoSuchElementException{
         User user = userRepository.findByUsername(username);
-        Category category = categoryRepository.findById(transactionDto.getCategoryId()).get();
+        Category category = categoryRepository.findById(transactionDto.getCategoryId()).orElseThrow();
         Transaction transaction = new Transaction(transactionDto.getId(), transactionDto.getAmount(),
                 transactionDto.getDescription(), transactionDto.getDateTime(), category, user);
         transactionRepository.save(transaction);
