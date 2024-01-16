@@ -69,15 +69,15 @@ public class BudgetController {
     public String getEditBudgetPage(Model model, @PathVariable Integer id,
             @AuthenticationPrincipal UserDetails userDetails) {
 
-        Optional<Budget> budget = budgetService.getBudgetById(id);
-            
+        Optional<Budget> budget = budgetService.getBudgetByIdAndUsername(id, userDetails.getUsername());
+
         if (budget.isPresent()) {
-            try{
+            try {
                 List<Category> categories = categoryService.getAllByUsername(userDetails.getUsername());
                 model.addAttribute("categories", categories);
                 BudgetDto budgetDto = new BudgetDto(budget.get());
                 model.addAttribute("budget", budgetDto);
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage());
             }
 
@@ -101,7 +101,7 @@ public class BudgetController {
     @GetMapping("/delete/{id}")
     public String deleteBudget(@PathVariable Integer id,
             @AuthenticationPrincipal UserDetails userDetails) {
-        Budget result = budgetService.deleteBudget(id);
+        Budget result = budgetService.deleteBudget(id, userDetails.getUsername());
         if (result != null) {
             return "redirect:/budgets";
         }

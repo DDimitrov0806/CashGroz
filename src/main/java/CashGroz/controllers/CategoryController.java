@@ -69,12 +69,11 @@ public class CategoryController {
 
     @PostMapping("/edit")
     public String editCategory(@ModelAttribute Category category, @AuthenticationPrincipal UserDetails userDetails) {
-        try{
+        try {
             categoryService.updateCategory(category, userDetails.getUsername());
-    
+
             return "redirect:/categories";
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }

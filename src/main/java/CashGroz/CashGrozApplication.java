@@ -16,7 +16,7 @@ public class CashGrozApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(RoleRepository roleRepo) {
+    public CommandLineRunner addRoles(RoleRepository roleRepo) {
         return (args) -> {
             Role role = new Role();
             role.setName("USER");

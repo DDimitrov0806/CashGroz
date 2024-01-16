@@ -1,11 +1,12 @@
 package CashGroz.services;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import CashGroz.dto.BudgetDto;
@@ -40,15 +41,30 @@ public class BudgetService {
         return amountSpent;
     }
 
-    public List<Budget> getAllBudgetsByUsername(String username) {
+    public List<Budget> getAllBudgetsByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
         List<Budget> budgets = user.getBudgets();
+
+        if (budgets == null) {
+            return new ArrayList<>();
+        }
 
         return budgets;
     }
 
-    public Optional<Budget> getBudgetById(Integer id) {
-        Optional<Budget> budget = budgetRepository.findById(id);
+    public Optional<Budget> getBudgetByIdAndUsername(Integer id, String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        Optional<Budget> budget = budgetRepository.findByIdAndUserId(id, user.getId());
 
         return budget;
     }
@@ -57,18 +73,18 @@ public class BudgetService {
         validateBudgetDto(budgetDto);
 
         User user = userRepository.findByUsername(username);
-        Category category = categoryRepository.findById(budgetDto.getCategoryId()).orElseThrow();
+        Category category = categoryRepository.findByIdAndUserId(budgetDto.getCategoryId(), user.getId()).orElseThrow();
         Budget budget = new Budget(budgetDto.getAmount(), user, budgetDto.getDateTimeFrom(), budgetDto.getDateTimeTo(),
                 category);
         budgetRepository.save(budget);
     }
 
-    public void updateBudget(BudgetDto budgetDto, String username) throws NoSuchElementException, Exception{
+    public void updateBudget(BudgetDto budgetDto, String username) throws NoSuchElementException, Exception {
         validateBudgetDto(budgetDto);
 
         User user = userRepository.findByUsername(username);
 
-        Category category = categoryRepository.findById(budgetDto.getCategoryId()).orElseThrow();
+        Category category = categoryRepository.findByIdAndUserId(budgetDto.getCategoryId(), user.getId()).orElseThrow();
 
         Budget budget = new Budget(budgetDto.getAmount(), budgetDto.getId(), user, budgetDto.getDateTimeFrom(),
                 budgetDto.getDateTimeTo(), category);
@@ -76,8 +92,12 @@ public class BudgetService {
         budgetRepository.save(budget);
     }
 
-    public Budget deleteBudget(Integer budgetId) {
-        Optional<Budget> budget = budgetRepository.findById(budgetId);
+    public Budget deleteBudget(Integer budgetId, String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        Optional<Budget> budget = budgetRepository.findByIdAndUserId(budgetId, user.getId());
         if (budget.isPresent()) {
             budgetRepository.deleteById(budgetId);
             return budget.get();
@@ -85,12 +105,12 @@ public class BudgetService {
         return null;
     }
 
-    private void validateBudgetDto(BudgetDto budgetDto) throws Exception{
-        if(budgetDto.getDateTimeFrom() == null || budgetDto.getDateTimeTo() == null) {
+    private void validateBudgetDto(BudgetDto budgetDto) throws Exception {
+        if (budgetDto.getDateTimeFrom() == null || budgetDto.getDateTimeTo() == null) {
             throw new Exception("Date Time From and Date Time To must have a value");
         }
 
-        if(budgetDto.getDateTimeFrom().compareTo(budgetDto.getDateTimeTo()) >= 0) {
+        if (budgetDto.getDateTimeFrom().compareTo(budgetDto.getDateTimeTo()) >= 0) {
             var swapDateTime = budgetDto.getDateTimeFrom();
             budgetDto.setDateTimeFrom(budgetDto.getDateTimeTo());
             budgetDto.setDateTimeTo(swapDateTime);

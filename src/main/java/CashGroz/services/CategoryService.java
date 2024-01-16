@@ -1,11 +1,13 @@
 package CashGroz.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import CashGroz.dto.CategoryDto;
@@ -31,7 +33,14 @@ public class CategoryService {
 
     public void createCategory(CategoryDto categoryDto, String username) {
         User user = userRepository.findByUsername(username);
-        String color = (categoryDto.getColor().equals("#ffffff") ? getRandomColor() : categoryDto.getColor());
+
+        if (user == null) {
+            throw new UsernameNotFoundException("The user with username: " + username + " was not found");
+        }
+
+        String color = (categoryDto.getColor() != null && categoryDto.getColor().equals("#ffffff")) ? getRandomColor()
+                : categoryDto.getColor();
+
         Category category = new Category(categoryDto.getName(), user, categoryDto.getIcon(), color);
         categoryRepository.save(category);
     }
@@ -39,13 +48,21 @@ public class CategoryService {
     public List<Category> getAllByUsername(String username) {
         User user = userRepository.findByUsername(username);
 
+        if (user == null) {
+            return new ArrayList<>();
+        }
+
         return categoryRepository.findAllByUserId(user.getId());
     }
 
     public void updateCategory(@NonNull Category category, String username) {
         User user = userRepository.findByUsername(username);
 
-        String color = (category.getColor().equals("#ffffff") ? getRandomColor() : category.getColor());
+        if (user == null) {
+            throw new UsernameNotFoundException("The user with username: " + username + " was not found");
+        }
+
+        String color = (category.getColor().equals("#ffffff")) ? getRandomColor() : category.getColor();
         category.setColor(color);
 
         category.setUser(user);

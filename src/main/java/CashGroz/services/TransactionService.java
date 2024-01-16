@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import CashGroz.dto.TransactionDto;
@@ -26,7 +27,11 @@ public class TransactionService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<Transaction> getAllByUsernameAndPeriod(String username, LocalDate fromDate, LocalDate toDate) {
+    public List<Transaction> getAllByUsernameAndPeriod(String username, LocalDate fromDate, LocalDate toDate)
+            throws IllegalArgumentException {
+        if (username == null || fromDate == null || toDate == null) {
+            throw new IllegalArgumentException("Username, fromDate and toDate cannot be null");
+        }
         User user = userRepository.findByUsername(username);
         List<Transaction> transactions = user.getTransactions()
                 .stream()
@@ -37,14 +42,25 @@ public class TransactionService {
         return transactions;
     }
 
-    public Optional<Transaction> getTransactionById(Integer id) {
-        Optional<Transaction> transaction = transactionRepository.findById(id);
+    public Optional<Transaction> getTransactionByIdAndUsername(@NonNull Integer id, String username)
+            throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        Optional<Transaction> transaction = transactionRepository.findByIdAndUserId(id, user.getId());
 
         return transaction;
     }
 
-    public Transaction deleteTransaction(@NonNull Integer id) {
-        Optional<Transaction> transaction = transactionRepository.findById(id);
+    public Transaction deleteTransaction(@NonNull Integer id, String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        Optional<Transaction> transaction = transactionRepository.findByIdAndUserId(id, user.getId());
 
         if (transaction.isPresent()) {
             transactionRepository.deleteById(id);
@@ -56,15 +72,17 @@ public class TransactionService {
 
     public void createTransaction(TransactionDto transactionDto, String username) throws NoSuchElementException {
         User user = userRepository.findByUsername(username);
-        Category category = categoryRepository.findById(transactionDto.getCategoryId()).orElseThrow();
+        Category category = categoryRepository.findByIdAndUserId(transactionDto.getCategoryId(), user.getId())
+                .orElseThrow();
         Transaction transaction = new Transaction(transactionDto.getAmount(), transactionDto.getDescription(),
                 transactionDto.getDateTime(), category, user);
         transactionRepository.save(transaction);
     }
 
-    public void updateTransaction(TransactionDto transactionDto, String username) throws NoSuchElementException{
+    public void updateTransaction(TransactionDto transactionDto, String username) throws NoSuchElementException {
         User user = userRepository.findByUsername(username);
-        Category category = categoryRepository.findById(transactionDto.getCategoryId()).orElseThrow();
+        Category category = categoryRepository.findByIdAndUserId(transactionDto.getCategoryId(), user.getId())
+                .orElseThrow();
         Transaction transaction = new Transaction(transactionDto.getId(), transactionDto.getAmount(),
                 transactionDto.getDescription(), transactionDto.getDateTime(), category, user);
         transactionRepository.save(transaction);

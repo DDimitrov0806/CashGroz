@@ -47,7 +47,7 @@ public class TransactionController {
             fromDate = toDate.plusDays(TIME_RANGE);
         }
 
-        if(fromDate.compareTo(toDate) >= 0) {
+        if (fromDate.compareTo(toDate) >= 0) {
             var swapDateTime = fromDate;
             fromDate = toDate;
             toDate = swapDateTime;
@@ -85,7 +85,8 @@ public class TransactionController {
     @GetMapping("/edit/{id}")
     public String getEditTransactionPage(Model model, @PathVariable Integer id,
             @AuthenticationPrincipal UserDetails userDetails) {
-        Optional<Transaction> transaction = transactionService.getTransactionById(id);
+        Optional<Transaction> transaction = transactionService.getTransactionByIdAndUsername(id,
+                userDetails.getUsername());
 
         if (transaction.isPresent()) {
             List<Category> categories = categoryService.getAllByUsername(userDetails.getUsername());
@@ -101,18 +102,20 @@ public class TransactionController {
     @PostMapping("/edit")
     public String editTransaction(@ModelAttribute TransactionDto transactionDto,
             @AuthenticationPrincipal UserDetails userDetails) {
-        try{
+        try {
             transactionService.updateTransaction(transactionDto, userDetails.getUsername());
-    
+
             return "redirect:/transactions";
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable Integer id) {
-        Transaction result = transactionService.deleteTransaction(id);
+    public String deleteCategory(@PathVariable Integer id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        Transaction result = transactionService.getTransactionByIdAndUsername(id, userDetails.getUsername())
+                .orElseThrow();
         if (result != null) {
             return "redirect:/transactions";
         }
