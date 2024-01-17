@@ -42,12 +42,11 @@ public class UserDetail implements UserDetailsService {
     }
 
     public User registerUser(UserDto userDto) {
-        // check if user exists
         User existingUser = userRepository.findByUsername(userDto.getUsername());
         if (existingUser != null) {
             return existingUser;
         }
-        // creating user object
+
         User user = new User();
         user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));

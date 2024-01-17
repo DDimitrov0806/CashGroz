@@ -70,8 +70,11 @@ public class TransactionService {
         return null;
     }
 
-    public void createTransaction(TransactionDto transactionDto, String username) throws NoSuchElementException {
+    public void createTransaction(TransactionDto transactionDto, String username) throws NoSuchElementException, UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
         Category category = categoryRepository.findByIdAndUserId(transactionDto.getCategoryId(), user.getId())
                 .orElseThrow();
         Transaction transaction = new Transaction(transactionDto.getAmount(), transactionDto.getDescription(),
@@ -79,8 +82,11 @@ public class TransactionService {
         transactionRepository.save(transaction);
     }
 
-    public void updateTransaction(TransactionDto transactionDto, String username) throws NoSuchElementException {
+    public void updateTransaction(TransactionDto transactionDto, String username) throws NoSuchElementException, UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
         Category category = categoryRepository.findByIdAndUserId(transactionDto.getCategoryId(), user.getId())
                 .orElseThrow();
         Transaction transaction = new Transaction(transactionDto.getId(), transactionDto.getAmount(),

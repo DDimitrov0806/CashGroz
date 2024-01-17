@@ -25,7 +25,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -155,14 +154,18 @@ public class BudgetServiceTest {
 
     @Test
     public void testGetBudgetById() {
+        User user = new User();
+        user.setUsername("testUsername");
+
         Budget budget = new Budget();
         Integer id = 1;
-        when(budgetRepository.findById(id)).thenReturn(Optional.of(budget));
-        User user = new User();
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+        when(budgetRepository.findByIdAndUserId(id, user.getId())).thenReturn(Optional.of(budget));
+
         Optional<Budget> result = budgetService.getBudgetByIdAndUsername(id, user.getUsername());
 
         assertEquals(Optional.of(budget), result);
-        verify(budgetRepository, times(1)).findById(id);
+        verify(budgetRepository, times(1)).findByIdAndUserId(id, user.getId());
     }
 
     @Test
@@ -170,8 +173,11 @@ public class BudgetServiceTest {
         Integer id = 1;
         Budget budget = new Budget();
         User user = new User();
+        user.setUsername("testUsername");
 
-        when(budgetRepository.findById(id)).thenReturn(Optional.of(budget));
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+        when(budgetRepository.findByIdAndUserId(id, user.getId())).thenReturn(Optional.of(budget));
+
         Optional<Budget> result = budgetService.getBudgetByIdAndUsername(id, user.getUsername());
 
         assertTrue(result.isPresent());
@@ -182,8 +188,10 @@ public class BudgetServiceTest {
     public void testGetBudgetByIdWithNonexistentBudget() {
         Integer id = 1;
         User user = new User();
+        user.setUsername("testUsername");
 
-        when(budgetRepository.findById(id)).thenReturn(Optional.empty());
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+        when(budgetRepository.findByIdAndUserId(id, user.getId())).thenReturn(Optional.empty());
 
         Optional<Budget> result = budgetService.getBudgetByIdAndUsername(id, user.getUsername());
 
@@ -193,7 +201,7 @@ public class BudgetServiceTest {
     // For createBudget METHOD
 
     @Test
-    public void testCreateBudget() {
+    public void testCreateBudget() throws Exception {
         BudgetDto budgetDto = new BudgetDto();
         budgetDto.setAmount(2000.0);
         budgetDto.setId(1);
@@ -202,24 +210,18 @@ public class BudgetServiceTest {
         budgetDto.setDateTimeTo(LocalDate.now());
 
         User user = new User();
+        user.setId(1);
         when(userRepository.findByUsername(anyString())).thenReturn(user);
 
         Category category = new Category();
-        when(categoryRepository.findById(anyInt())).thenReturn(Optional.of(category));
+        when(categoryRepository.findByIdAndUserId(budgetDto.getCategoryId(), user.getId()))
+                .thenReturn(Optional.of(category));
 
-        try {
-            budgetService.createBudget(budgetDto, "username");
-        } catch (NoSuchElementException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        budgetService.createBudget(budgetDto, "username");
 
         verify(budgetRepository, times(1)).save(any());
         verify(userRepository, times(1)).findByUsername(anyString());
-        verify(categoryRepository, times(1)).findById(anyInt());
+        verify(categoryRepository, times(1)).findByIdAndUserId(budgetDto.getCategoryId(), user.getId());
     }
 
     @Test
@@ -230,69 +232,60 @@ public class BudgetServiceTest {
 
         User user = new User();
         when(userRepository.findByUsername(username)).thenReturn(user);
-        when(categoryRepository.findById(budgetDto.getCategoryId())).thenReturn(Optional.empty());
+        when(categoryRepository.findByIdAndUserId(budgetDto.getCategoryId(), user.getId()))
+                .thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(NoSuchElementException.class, () -> {
+        assertThrows(Exception.class, () -> {
             budgetService.createBudget(budgetDto, username);
         });
-
-        assertNotNull(exception);
     }
 
     @Test
     public void testCreateBudgetWithNonexistentUser() {
         BudgetDto budgetDto = new BudgetDto();
         budgetDto.setCategoryId(1);
+        budgetDto.setDateTimeFrom(LocalDate.now());
+        budgetDto.setDateTimeTo(LocalDate.now().plusDays(1));
         String username = "test";
 
         when(userRepository.findByUsername(username)).thenReturn(null);
-        when(categoryRepository.findById(budgetDto.getCategoryId())).thenReturn(Optional.of(new Category()));
+        when(categoryRepository.findByIdAndUserId(anyInt(), anyInt())).thenReturn(Optional.of(new Category()));
 
-        Exception exception = assertThrows(UsernameNotFoundException.class, () -> {
+        UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class, () -> {
             budgetService.createBudget(budgetDto, username);
         });
 
         assertEquals("User not found", exception.getMessage());
     }
 
-    // For updateBudget METHOD
-
     @Test
-    public void testUpdateBudget() {
-        BudgetDto budgetDto = new BudgetDto();
-        budgetDto.setAmount(2000.0);
-        budgetDto.setId(1);
-        budgetDto.setCategoryId(1);
-        String username = "test";
-
-        User user = new User();
-        Category category = new Category();
-
-        when(userRepository.findByUsername(username)).thenReturn(user);
-        when(categoryRepository.findById(budgetDto.getCategoryId())).thenReturn(Optional.of(category));
-
-        try {
-            budgetService.updateBudget(budgetDto, username);
-        } catch (NoSuchElementException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        verify(budgetRepository, times(1)).save(any());
-    }
-
-    @Test
-    public void testUpdateBudgetWithNonexistentUser() {
+    public void testCreateBudgetWithNoDatesSet() {
         BudgetDto budgetDto = new BudgetDto();
         budgetDto.setCategoryId(1);
         String username = "test";
 
         when(userRepository.findByUsername(username)).thenReturn(null);
+        when(categoryRepository.findByIdAndUserId(anyInt(), anyInt())).thenReturn(Optional.of(new Category()));
 
-        Exception exception = assertThrows(UsernameNotFoundException.class, () -> {
+        NoSuchElementException exception = assertThrows(NoSuchElementException.class, () -> {
+            budgetService.createBudget(budgetDto, username);
+        });
+
+        assertEquals("Date Time From and Date Time To must have a value", exception.getMessage());
+    }
+    // For updateBudget METHOD
+
+    @Test
+    public void testUpdateBudgetWithNonexistentUser() {
+        BudgetDto budgetDto = new BudgetDto();
+        budgetDto.setCategoryId(1);
+        budgetDto.setDateTimeFrom(LocalDate.now());
+        budgetDto.setDateTimeTo(LocalDate.now().plusDays(1));
+        String username = "test";
+
+        when(userRepository.findByUsername(username)).thenReturn(null);
+
+        UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class, () -> {
             budgetService.updateBudget(budgetDto, username);
         });
 
@@ -303,6 +296,8 @@ public class BudgetServiceTest {
     public void testUpdateBudgetWithNonexistentCategory() {
         BudgetDto budgetDto = new BudgetDto();
         budgetDto.setCategoryId(1);
+        budgetDto.setDateTimeFrom(LocalDate.now());
+        budgetDto.setDateTimeTo(LocalDate.now().plusDays(1));
         String username = "test";
 
         User user = new User();
@@ -323,8 +318,10 @@ public class BudgetServiceTest {
         Integer budgetId = 1;
         Budget budget = new Budget();
         User user = new User();
+        user.setUsername("testUser");
 
-        when(budgetRepository.findById(budgetId)).thenReturn(Optional.of(budget));
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+        when(budgetRepository.findByIdAndUserId(budgetId, user.getId())).thenReturn(Optional.of(budget));
 
         Budget result = budgetService.deleteBudget(budgetId, user.getUsername());
 
@@ -337,8 +334,12 @@ public class BudgetServiceTest {
         Integer budgetId = 1;
         Budget budget = new Budget();
         User user = new User();
+        user.setUsername("testUser");
+        user.setId(1);
 
-        when(budgetRepository.findById(budgetId)).thenReturn(Optional.of(budget));
+        when(budgetRepository.findByIdAndUserId(budgetId, user.getId())).thenReturn(Optional.of(budget));
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+
         Budget result = budgetService.deleteBudget(budgetId, user.getUsername());
 
         assertEquals(budget, result);
@@ -349,11 +350,17 @@ public class BudgetServiceTest {
     public void testDeleteBudgetWithNonexistentBudget() {
         Integer budgetId = 1;
         User user = new User();
+        user.setId(1);
+        user.setUsername("testUser");
 
-        when(budgetRepository.findById(budgetId)).thenReturn(Optional.empty());
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
 
-        Budget result = budgetService.deleteBudget(budgetId, user.getUsername());
+        when(budgetRepository.findByIdAndUserId(budgetId, user.getId())).thenReturn(Optional.empty());
 
-        assertNull(result);
+        Exception exception = assertThrows(NoSuchElementException.class, () -> {
+            budgetService.deleteBudget(budgetId, user.getUsername());
+        });
+
+        assertNotNull(exception);
     }
 }

@@ -194,7 +194,7 @@ public class CategoryServiceTest {
 
         verify(userRepository, times(1)).findByUsername(username);
         verify(categoryRepository, times(0)).save(any(Category.class));
-        String expectedMessage = "The user with username: " + username + " was not found"; // updated expected message
+        String expectedMessage = "The user with username: " + username + " was not found";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }

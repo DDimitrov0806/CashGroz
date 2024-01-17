@@ -73,6 +73,9 @@ public class BudgetService {
         validateBudgetDto(budgetDto);
 
         User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
         Category category = categoryRepository.findByIdAndUserId(budgetDto.getCategoryId(), user.getId()).orElseThrow();
         Budget budget = new Budget(budgetDto.getAmount(), user, budgetDto.getDateTimeFrom(), budgetDto.getDateTimeTo(),
                 category);
@@ -83,7 +86,9 @@ public class BudgetService {
         validateBudgetDto(budgetDto);
 
         User user = userRepository.findByUsername(username);
-
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
         Category category = categoryRepository.findByIdAndUserId(budgetDto.getCategoryId(), user.getId()).orElseThrow();
 
         Budget budget = new Budget(budgetDto.getAmount(), budgetDto.getId(), user, budgetDto.getDateTimeFrom(),
@@ -92,22 +97,23 @@ public class BudgetService {
         budgetRepository.save(budget);
     }
 
-    public Budget deleteBudget(Integer budgetId, String username) throws UsernameNotFoundException {
+    public Budget deleteBudget(Integer budgetId, String username)
+            throws NoSuchElementException, UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
         Optional<Budget> budget = budgetRepository.findByIdAndUserId(budgetId, user.getId());
-        if (budget.isPresent()) {
-            budgetRepository.deleteById(budgetId);
-            return budget.get();
+        if (!budget.isPresent()) {
+            throw new NoSuchElementException("Budget not found");
         }
-        return null;
+        budgetRepository.deleteById(budgetId);
+        return budget.get();
     }
 
-    private void validateBudgetDto(BudgetDto budgetDto) throws Exception {
+    private void validateBudgetDto(BudgetDto budgetDto) throws NoSuchElementException {
         if (budgetDto.getDateTimeFrom() == null || budgetDto.getDateTimeTo() == null) {
-            throw new Exception("Date Time From and Date Time To must have a value");
+            throw new NoSuchElementException("Date Time From and Date Time To must have a value");
         }
 
         if (budgetDto.getDateTimeFrom().compareTo(budgetDto.getDateTimeTo()) >= 0) {

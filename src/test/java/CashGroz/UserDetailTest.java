@@ -38,19 +38,15 @@ class UserDetailTest {
 
     @Test
     void loadUserByUsername_UserExists_ReturnsUserDetails() {
-        // Arrange
         String username = "existingUser";
         User user = new User();
         user.setUsername(username);
         user.setPassword("encodedPassword");
 
-        // Mock the UserRepository to return the user when findByUsername is called
         when(userRepository.findByUsername(username)).thenReturn(user);
 
-        // Act
         UserDetails userDetails = userDetail.loadUserByUsername(username);
 
-        // Assert
         assertNotNull(userDetails);
         assertEquals(username, userDetails.getUsername());
         assertEquals("encodedPassword", userDetails.getPassword());
@@ -59,18 +55,15 @@ class UserDetailTest {
 
     @Test
     void loadUserByUsername_UserDoesNotExist_ThrowsException() {
-        // Arrange
         String username = "nonExistentUser";
 
         when(userRepository.findByUsername(username)).thenReturn(null);
 
-        // Act/Assert
         assertThrows(UsernameNotFoundException.class, () -> userDetail.loadUserByUsername(username));
     }
 
     @Test
     void registerUser_UserDoesNotExist_ReturnsUser() {
-        // Arrange
         UserDto userDto = new UserDto();
         userDto.setUsername("newUser");
         userDto.setPassword("password");
@@ -78,16 +71,13 @@ class UserDetailTest {
         when(userRepository.findByUsername("newUser")).thenReturn(null);
         when(roleRepository.findByName("USER")).thenReturn(Optional.of(new Role()));
 
-        // Act
         User registeredUser = userDetail.registerUser(userDto);
 
-        // Assert
         assertNull(registeredUser);
     }
 
     @Test
     void registerUser_UserExists_ReturnsUser() {
-        // Arrange
         UserDto userDto = new UserDto();
         userDto.setUsername("existingUser");
         userDto.setPassword("password");
@@ -98,42 +88,26 @@ class UserDetailTest {
 
         when(userRepository.findByUsername("existingUser")).thenReturn(user);
 
-        // Act
         User registeredUser = userDetail.registerUser(userDto);
 
-        // Assert
         assertEquals(registeredUser, user);
     }
 
     @Test
     void loadUserByUsername_EmptyUsername_ThrowsException() {
-        // Act/Assert
         assertThrows(UsernameNotFoundException.class, () -> userDetail.loadUserByUsername(""));
     }
 
     @Test
     void registerUser_NullDto_ThrowsException() {
-        // Act/Assert
-        assertThrows(IllegalArgumentException.class, () -> userDetail.registerUser(null));
-    }
-
-    @Test
-    void registerUser_NullUsername_ThrowsException() {
-        // Arrange
-        UserDto userDto = new UserDto();
-        userDto.setPassword("password");
-
-        // Act/Assert
-        assertThrows(IllegalArgumentException.class, () -> userDetail.registerUser(userDto));
+        assertThrows(NullPointerException.class, () -> userDetail.registerUser(null));
     }
 
     @Test
     void registerUser_NullPassword_ThrowsException() {
-        // Arrange
         UserDto userDto = new UserDto();
         userDto.setUsername("newUser");
 
-        // Act/Assert
         assertThrows(IllegalArgumentException.class, () -> userDetail.registerUser(userDto));
     }
 

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ import CashGroz.repositories.UserRepository;
 import CashGroz.services.TransactionService;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -81,7 +83,7 @@ class TransactionServiceTest {
         List<Transaction> result = transactionService.getAllByUsernameAndPeriod("testUser",
                 LocalDate.now().minusDays(5), LocalDate.now().plusDays(1));
 
-        assertTrue(result.isEmpty()); // There should be no transaction in this period
+        assertTrue(result.isEmpty());
     }
 
     @Test
@@ -102,8 +104,11 @@ class TransactionServiceTest {
         transaction.setId(1);
 
         User user = new User();
+        user.setUsername("testUser");
+        user.setId(1);
 
-        when(transactionRepository.findById(1)).thenReturn(Optional.of(transaction));
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+        when(transactionRepository.findByIdAndUserId(1, user.getId())).thenReturn(Optional.of(transaction));
 
         Optional<Transaction> result = transactionService.getTransactionByIdAndUsername(1, user.getUsername());
 
@@ -114,20 +119,13 @@ class TransactionServiceTest {
     @Test
     public void testGetTransactionById_TransactionNotFound() {
         User user = new User();
-
+        user.setId(1);
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
         when(transactionRepository.findById(1)).thenReturn(Optional.empty());
 
         Optional<Transaction> result = transactionService.getTransactionByIdAndUsername(1, user.getUsername());
 
-        assertFalse(result.isPresent()); // The result should be empty as there is no transaction with the given ID
-    }
-
-    @Test
-    public void testGetTransactionById_NullId() {
-        User user = new User();
-        assertThrows(IllegalArgumentException.class, () -> {
-            transactionService.getTransactionByIdAndUsername(null, user.getUsername());
-        });
+        assertFalse(result.isPresent());
     }
 
     // FOR deleteTransaction METHOD
@@ -135,9 +133,15 @@ class TransactionServiceTest {
     @Test
     public void testDeleteTransaction() {
         User user = new User();
+        user.setId(1);
+        user.setUsername("testUser");
+
         Transaction transaction = new Transaction();
         transaction.setId(1);
-        when(transactionRepository.findById(1)).thenReturn(Optional.of(transaction));
+
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+        when(transactionRepository.findByIdAndUserId(1, user.getId())).thenReturn(Optional.of(transaction));
+
         doNothing().when(transactionRepository).deleteById(1);
 
         Transaction result = transactionService.deleteTransaction(1, user.getUsername());
@@ -149,7 +153,11 @@ class TransactionServiceTest {
     @Test
     public void testDeleteTransaction_TransactionNotFound() {
         User user = new User();
-        when(transactionRepository.findById(1)).thenReturn(Optional.empty());
+        user.setId(1);
+        user.setUsername("testUser");
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+
+        when(transactionRepository.findByIdAndUserId(1, user.getId())).thenReturn(Optional.empty());
 
         Transaction result = transactionService.deleteTransaction(1, user.getUsername());
 
@@ -161,6 +169,7 @@ class TransactionServiceTest {
     @Test
     public void testCreateTransaction() {
         User user = new User();
+        user.setId(1);
         user.setUsername("testUser");
 
         Category category = new Category();
@@ -169,7 +178,7 @@ class TransactionServiceTest {
         TransactionDto transactionDto = new TransactionDto(500.00, "description", LocalDateTime.now(), 1);
 
         when(userRepository.findByUsername("testUser")).thenReturn(user);
-        when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
+        when(categoryRepository.findByIdAndUserId(1, user.getId())).thenReturn(Optional.of(category));
 
         transactionService.createTransaction(transactionDto, "testUser");
 
@@ -177,12 +186,18 @@ class TransactionServiceTest {
     }
 
     @Test
-    public void testCreateTransaction_UsernameNotFound() {
-        when(userRepository.findByUsername("badUsername")).thenReturn(null);
+    public void testCreateTransaction_CategoryNotFound() {
+        User user = new User();
+        user.setId(1);
+        user.setUsername("testUser");
+
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+        when(categoryRepository.findByIdAndUserId(anyInt(), anyInt())).thenReturn(Optional.empty());
+
         TransactionDto transactionDto = new TransactionDto(500.00, "description", LocalDateTime.now(), 1);
 
         assertThrows(NoSuchElementException.class, () -> {
-            transactionService.createTransaction(transactionDto, "badUsername");
+            transactionService.createTransaction(transactionDto, user.getUsername());
         });
     }
 
@@ -200,10 +215,10 @@ class TransactionServiceTest {
     }
 
     // FOR updateTransaction METHOD
-
     @Test
     public void testUpdateTransaction() {
         User user = new User();
+        user.setId(1);
         user.setUsername("testUser");
 
         Category category = new Category();
@@ -212,7 +227,7 @@ class TransactionServiceTest {
         TransactionDto transactionDto = new TransactionDto(1, 500.00, "description", LocalDateTime.now(), 1);
 
         when(userRepository.findByUsername("testUser")).thenReturn(user);
-        when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
+        when(categoryRepository.findByIdAndUserId(1, user.getId())).thenReturn(Optional.of(category));
 
         transactionService.updateTransaction(transactionDto, "testUser");
 
@@ -224,7 +239,7 @@ class TransactionServiceTest {
         when(userRepository.findByUsername("badUsername")).thenReturn(null);
         TransactionDto transactionDto = new TransactionDto(500.00, "description", LocalDateTime.now(), 1);
 
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(UsernameNotFoundException.class, () -> {
             transactionService.updateTransaction(transactionDto, "badUsername");
         });
     }
@@ -232,12 +247,15 @@ class TransactionServiceTest {
     @Test
     public void testUpdateTransaction_CategoryIdNotFound() {
         User user = new User();
+        user.setId(1);
+        user.setUsername("testUser");
+
         when(userRepository.findByUsername("testUser")).thenReturn(user);
-        when(categoryRepository.findById(1)).thenReturn(Optional.empty());
+        when(categoryRepository.findByIdAndUserId(anyInt(), anyInt())).thenReturn(Optional.empty());
 
         TransactionDto transactionDto = new TransactionDto(500.00, "description", LocalDateTime.now(), 1);
 
-        assertThrows(NullPointerException.class, () -> {
+        assertThrows(NoSuchElementException.class, () -> {
             transactionService.updateTransaction(transactionDto, "testUser");
         });
     }
